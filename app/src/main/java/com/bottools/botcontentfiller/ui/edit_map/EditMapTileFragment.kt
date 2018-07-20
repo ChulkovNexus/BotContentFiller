@@ -55,38 +55,43 @@ class EditMapTileFragment : Fragment() {
             localMap.tiles[posx][posy].isUnpassable = isChecked
         }
 
+        can_see_throw.isChecked = localMap.tiles[posx][posy].canSeeThrow!!
+        can_see_throw.setOnCheckedChangeListener { view, isChecked ->
+            localMap.tiles[posx][posy].canSeeThrow = isChecked
+        }
+
         listFiller.fillLayout(container, localMap.tiles[posx][posy].lookingForWayPrefix, context.getString(R.string.custom_looking_for_way_prefix))
         listFiller.fillLayout(container, localMap.tiles[posx][posy].thisTileCustomDescription, context.getString(R.string.custom_description))
 
-        if (posx + 1 < localMap.tiles.size - 1) {
+        if (posx + 1 < localMap.tiles.size) {
             listFiller.fillLayout(container, localMap.tiles[posx + 1][posy].nextTileCustomDescription, context.getString(R.string.next_righ_tile_descr))
             listFiller.fillLayout(container, localMap.tiles[posx + 1][posy].behindCustomText, context.getString(R.string.next_righ_behind_text))
         }
-        if (posx + 2 < localMap.tiles.size - 1)
+        if (posx + 2 < localMap.tiles.size)
             listFiller.fillLayout(container, localMap.tiles[posx + 2][posy].customFarBehindText, context.getString(R.string.far_behind_righ_text))
 
         
-        if (posx - 1 > 0) {
+        if (posx - 1 >= 0) {
             listFiller.fillLayout(container, localMap.tiles[posx - 1][posy].nextTileCustomDescription, context.getString(R.string.next_left_tile_descr))
             listFiller.fillLayout(container, localMap.tiles[posx - 1][posy].behindCustomText, context.getString(R.string.next_left_behind_text))
         }
-        if (posx - 2 > 0)
+        if (posx - 2 >= 0)
             listFiller.fillLayout(container, localMap.tiles[posx - 2][posy].customFarBehindText, context.getString(R.string.far_behind_left_text))
 
 
-        if (posy - 1 > 0) {
+        if (posy - 1 >= 0) {
             listFiller.fillLayout(container, localMap.tiles[posx][posy + 1].nextTileCustomDescription, context.getString(R.string.next_top_tile_descr))
             listFiller.fillLayout(container, localMap.tiles[posx][posy + 1].behindCustomText, context.getString(R.string.next_top_behind_text))
         }
-        if (posy - 2 > 0)
+        if (posy - 2 >= 0)
             listFiller.fillLayout(container, localMap.tiles[posx][posy + 2].customFarBehindText, context.getString(R.string.far_behind_top_text))
 
 
-        if (posy + 1 < localMap.tiles[0].size - 1) {
+        if (posy + 1 < localMap.tiles[0].size) {
             listFiller.fillLayout(container, localMap.tiles[posx][posy + 1].nextTileCustomDescription, context.getString(R.string.next_bottom_tile_descr))
             listFiller.fillLayout(container, localMap.tiles[posx][posy + 1].behindCustomText, context.getString(R.string.next_bottom_behind_text))
         }
-        if (posy + 2 < localMap.tiles[0].size - 1)
+        if (posy + 2 < localMap.tiles[0].size)
             listFiller.fillLayout(container, localMap.tiles[posx][posy + 2].customFarBehindText, context.getString(R.string.far_behind_bottom_text))
 
         listFiller.addMapTileEvent(container, localMap, localMap.tiles[posx][posy], context.getString(R.string.events))
@@ -97,5 +102,7 @@ class EditMapTileFragment : Fragment() {
             localMap.events = ArrayList()
         if (mapTile.events == null)
             mapTile.events = ArrayList()
+        if (mapTile.canSeeThrow == null)
+            mapTile.canSeeThrow = true
     }
 }

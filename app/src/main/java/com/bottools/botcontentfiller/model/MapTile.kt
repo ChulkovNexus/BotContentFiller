@@ -10,6 +10,7 @@ class MapTile {
     var posX = 0
     var posY = 0
     var isUnpassable = false
+    var canSeeThrow: Boolean? = null
     var thisTileCustomDescription = ArrayList<String>()
     var lookingForWayPrefix = ArrayList<String>()
     var nextTileCustomDescription = ArrayList<String>()

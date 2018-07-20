@@ -39,4 +39,5 @@
     <string name="probability">Процент вероятности 0 - 1 float</string>
     <string name="unpassable">Непроходимая ячейка</string>
     <string name="edit_unknown_defaults">Edit unknown defaults</string>
+    <string name="can_see_throw">Можно ли видеть сквозь эту ячейку</string>
 </resources>
