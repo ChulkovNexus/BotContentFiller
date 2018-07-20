@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">BotContentFiller</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_map">Edit map</string>
+    <string name="go_top">Go top</string>
+    <string name="go_left">Go left</string>
+    <string name="go_right">Go right</string>
+    <string name="go_bot">Go bottom</string>
+    <string name="edit_map_defaults">Edit map defaults</string>
+    <string name="save_map">Save</string>
+    <string name="edit_behind_defaults">Edit behind defaults</string>
+    <string name="edit_left_defaults">Edit left defaults</string>
+    <string name="edit_top_defaults">Edit top defaults</string>
+    <string name="edit_right_defaults">Edit right defaults</string>
+    <string name="edit_bottom_defaults">Edit bottom defaults</string>
+    <string name="add">Add</string>
+    <string name="edit_unpassable_defaults">Edit unpassable defaults</string>
+    <string name="edit_looking_for_way_defaults">рассказ о том как ты искал пути</string>
+    <string name="custom_looking_for_way_prefix">Кастомный рассказ о поиске пути</string>
+    <string name="custom_description">Кастомный рассказ об этом тайле</string>
+    <string name="next_righ_tile_descr">направо виднеется</string>
+    <string name="next_righ_behind_text">\"За ним\" кастомный текст направо</string>
+    <string name="far_behind_righ_text">описание того что далеко направо</string>
+    
+    <string name="next_left_tile_descr">налево виднеется</string>
+    <string name="next_left_behind_text">\"За ним\" кастомный текст налево</string>
+    <string name="far_behind_left_text">описание того что далеко налево</string>
+    
+    <string name="next_top_tile_descr">вверх виднеется</string>
+    <string name="next_top_behind_text">\"За ним\" кастомный текст вверх</string>
+    <string name="far_behind_top_text">описание того что далеко вверх</string>
+    
+    <string name="next_bottom_tile_descr">вниз виднеется</string>
+    <string name="next_bottom_behind_text">\"За ним\" кастомный текст вниз</string>
+    <string name="far_behind_bottom_text">описание того что далеко вниз</string>
+    <string name="edit_tile">Edit texts</string>
+    <string name="events">Эвенты</string>
+    <string name="is_global">global</string>
+    <string name="probability">Процент вероятности 0 - 1 float</string>
+    <string name="unpassable">Непроходимая ячейка</string>
+    <string name="edit_unknown_defaults">Edit unknown defaults</string>
+</resources>
