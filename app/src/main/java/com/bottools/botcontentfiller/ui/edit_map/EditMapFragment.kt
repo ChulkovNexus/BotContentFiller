@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import com.bottools.botcontentfiller.R
+import com.bottools.botcontentfiller.logic.viewver.EarthTypeViewer
+import com.bottools.botcontentfiller.logic.viewver.Viewer
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_edit_map.*
 import java.io.File
@@ -20,6 +22,7 @@ class EditMapFragment : Fragment() {
     var map: com.bottools.botcontentfiller.model.WorldMap? = null
     private var currentPositionX = 0
     private var currentPositionY = 0
+    private lateinit var viewer : Viewer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,11 @@ class EditMapFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         val ac = activity as ActivityEditMap
-        map = ac.map
+        val localMap = ac.map
+        map = localMap
+        if (localMap!=null) {
+            viewer = EarthTypeViewer(localMap)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -89,9 +96,9 @@ class EditMapFragment : Fragment() {
         val appCompatActivity = activity as AppCompatActivity
         appCompatActivity.setSupportActionBar(toolbar)
         appCompatActivity.supportActionBar?.title = "0:0"
-        positionIndicator.setSize(map!!.tiles[0].size, map!!.tiles.size)
+        positionIndicator.setSize(map!!)
         edit.setOnClickListener {
-            val fragment = EditMapTileFragment.createInstance(currentPositionX, currentPositionY)
+            val fragment = EditMapTileFragment.createInstance(map!!.getTile(currentPositionX, currentPositionY))
             val transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
             transaction.addToBackStack("")
@@ -115,7 +122,7 @@ class EditMapFragment : Fragment() {
             }
         }
         go_right.setOnClickListener {
-            if (currentPositionX < map!!.tiles[0].size - 1) {
+            if (currentPositionX < map!!.tiles[currentPositionY].size - 1) {
                 currentPositionX++
                 positionIndicator.setPosition(currentPositionX, currentPositionY)
                 appCompatActivity.supportActionBar?.title = "$currentPositionX:$currentPositionY"
@@ -133,92 +140,10 @@ class EditMapFragment : Fragment() {
     }
 
     private fun updateTexts() {
-        custom_text.text = getRandItem(map!!.tiles[currentPositionX][currentPositionY].thisTileCustomDescription) ?: ""
-        way_text.text = (getRandItem(map!!.tiles[currentPositionX][currentPositionY].lookingForWayPrefix)
-                ?: getRandItem(map!!.defaultLookingForWayPrefix) ?: "") +
-                getTopText() + "," + getRightText() + "," + getBottomText() + "," + getLeftText()
+        val currentTile = map!!.getTile(currentPositionX, currentPositionY)
+        custom_text.text = viewer.getCurrentTileText(currentTile)
+        way_text.text = "${map!!.defaultLookingForWayPrefix} ${viewer.getTopText(currentTile)}, ${viewer.getRightText(currentTile)}," +
+                " ${viewer.getBottomText(currentTile)}, ${viewer.getLeftText(currentTile)}"
     }
 
-    private fun getTopText(): CharSequence {
-        var text = ""
-        text += getRandItem(map!!.defaultTopMovingTexts) ?: ""
-        if (currentPositionY - 1 >= 0) {
-            text += getRandItem(map!!.tiles[currentPositionX][currentPositionY - 1].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-            text += getRandItem(map!!.tiles[currentPositionX][currentPositionY - 1].behindCustomText) ?: getRandItem(map!!.defaultBehindsTexts) ?: ""
-            if (map!!.tiles[currentPositionX][currentPositionY - 1].canSeeThrow ?: true)
-                if (currentPositionY - 2 >= 0) {
-                    text += getRandItem(map!!.tiles[currentPositionX][currentPositionY - 2].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-                } else {
-                    text += getRandItem(map!!.unpassableDefaults) ?: ""
-                }
-        } else {
-            text += getRandItem(map!!.unpassableDefaults) ?: ""
-        }
-
-        return text
-    }
-
-    private fun getLeftText(): CharSequence {
-        var text = ""
-        text += getRandItem(map!!.defaultLeftMovingTexts) ?: ""
-        if (currentPositionX - 1 >= 0) {
-            text += getRandItem(map!!.tiles[currentPositionX - 1][currentPositionY].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-            text += getRandItem(map!!.tiles[currentPositionX - 1][currentPositionY].behindCustomText) ?: getRandItem(map!!.defaultBehindsTexts) ?: ""
-            if (map!!.tiles[currentPositionX - 1][currentPositionY].canSeeThrow ?: true)
-                if (currentPositionX - 2 >= 0) {
-                    text += getRandItem(map!!.tiles[currentPositionX - 2][currentPositionY].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-                } else {
-                    text += getRandItem(map!!.unpassableDefaults) ?: ""
-                }
-        } else {
-            text += getRandItem(map!!.unpassableDefaults) ?: ""
-        }
-
-        return text
-    }
-
-    private fun getRightText(): CharSequence {
-        var text = ""
-        text += getRandItem(map!!.defaultRightMovingTexts) ?: ""
-        if (currentPositionX + 1 < map!!.tiles.size) {
-            text += getRandItem(map!!.tiles[currentPositionX + 1][currentPositionY].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-            text += getRandItem(map!!.tiles[currentPositionX + 1][currentPositionY].behindCustomText) ?: getRandItem(map!!.defaultBehindsTexts) ?: ""
-            if (map!!.tiles[currentPositionX + 1][currentPositionY].canSeeThrow ?: true)
-                if (currentPositionX + 2 < map!!.tiles.size) {
-                    text += getRandItem(map!!.tiles[currentPositionX + 2][currentPositionY].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-                } else {
-                    text += getRandItem(map!!.unpassableDefaults) ?: ""
-                }
-        } else {
-            text += getRandItem(map!!.unpassableDefaults) ?: ""
-        }
-
-        return text
-    }
-
-    private fun getBottomText(): CharSequence {
-        var text = ""
-        text += getRandItem(map!!.defaultBottomMovingTexts) ?: ""
-        if (currentPositionY + 1 < map!!.tiles[0].size) {
-            text += getRandItem(map!!.tiles[currentPositionX][currentPositionY + 1].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-            text += getRandItem(map!!.tiles[currentPositionX][currentPositionY + 1].behindCustomText) ?: getRandItem(map!!.defaultBehindsTexts) ?: ""
-            if (map!!.tiles[currentPositionX][currentPositionY + 1].canSeeThrow ?: true)
-                if (currentPositionY + 2 < map!!.tiles[0].size) {
-                    text += getRandItem(map!!.tiles[currentPositionX][currentPositionY + 2].nextTileCustomDescription) ?: getRandItem(map!!.unknownsDefaults) ?: ""
-                } else {
-                    text += getRandItem(map!!.unpassableDefaults) ?: ""
-                }
-        } else {
-            text += getRandItem(map!!.unpassableDefaults) ?: ""
-        }
-
-        return text
-    }
-
-    private fun getRandItem(list: ArrayList<String>?): String? {
-        if (list == null || list.isEmpty()) {
-            return null
-        }
-        return " ${list.shuffled().take(1)[0]}"
-    }
 }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import com.bottools.botcontentfiller.model.WorldMap
 
 class PositionIndicator : FrameLayout {
 
@@ -15,10 +16,9 @@ class PositionIndicator : FrameLayout {
 
     private var linePaint: Paint? = null
     private var mFloorPaint: Paint? = null
-    private var sizeY = 0
-    private var sizeX = 0
     private var posY = 0
     private var posX = 0
+    private var map: WorldMap? = null
 
     init {
         setWillNotDraw(false)
@@ -34,13 +34,10 @@ class PositionIndicator : FrameLayout {
         this.mFloorPaint!!.isAntiAlias = true
     }
 
-
-    fun setSize(sizeX : Int, sizeY : Int) {
-        this.sizeX = sizeX
-        this.sizeY = sizeY
+    fun setSize(map: WorldMap) {
+        this.map = map
         postInvalidate()
     }
-
 
     fun setPosition(posX : Int, posY : Int) {
         this.posX = posX
@@ -51,8 +48,12 @@ class PositionIndicator : FrameLayout {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        val xLinesCount = sizeX
-        val yLinesCount = sizeY
+        if (map==null)
+            return
+
+        val xLinesCount = map!!.tiles.size
+        val yLinesCount = map!!.tiles[0].size
+
         val xBlockSize = measuredWidth.toFloat()/ xLinesCount
         val yBlockSize = measuredHeight.toFloat()/ yLinesCount
         canvas?.drawColor(Color.GREEN)
@@ -62,7 +63,15 @@ class PositionIndicator : FrameLayout {
         for (i in 0..yLinesCount) {
             canvas?.drawLine(0f, yBlockSize * i, measuredWidth.toFloat(),yBlockSize * i, linePaint)
         }
+        mFloorPaint!!.color = Color.RED
         canvas?.drawRect(xBlockSize * posX, yBlockSize * posY,xBlockSize * (posX+1), yBlockSize * (posY + 1), mFloorPaint)
-
+        mFloorPaint!!.color = Color.BLACK
+        map!!.tiles.forEachIndexed {i, it ->
+            map!!.tiles[i].forEachIndexed { j, it ->
+                if (map!!.tiles[i][j].isUnpassable) {
+                    canvas?.drawRect(xBlockSize * i, yBlockSize * j, xBlockSize * (i + 1), yBlockSize * (j + 1), mFloorPaint)
+                }
+            }
+        }
     }
 }

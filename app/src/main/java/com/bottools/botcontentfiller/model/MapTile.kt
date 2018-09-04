@@ -1,6 +1,6 @@
 package com.bottools.botcontentfiller.model
 
-class MapTile {
+open class MapTile : Tile {
 
     constructor(posX: Int, posY: Int) {
         this.posX = posX
@@ -9,13 +9,8 @@ class MapTile {
 
     var posX = 0
     var posY = 0
-    var isUnpassable = false
-    var canSeeThrow: Boolean? = null
-    var thisTileCustomDescription = ArrayList<String>()
-    var lookingForWayPrefix = ArrayList<String>()
-    var nextTileCustomDescription = ArrayList<String>()
-    var behindCustomText = ArrayList<String>()
-    var customFarBehindText = ArrayList<String>()
+    var biomeId = 0
+    var buildings = ArrayList<Item>()
     var events = ArrayList<Long>()
 
 }

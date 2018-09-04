@@ -1,5 +1,6 @@
 package com.bottools.botcontentfiller.model
 
+import com.bottools.botcontentfiller.utils.getRandItem
 import java.util.*
 
 class WorldMap {
@@ -12,26 +13,57 @@ class WorldMap {
             }
         }
     }
-    val defaultLeftMovingTexts = ArrayList<String>()
-    val defaultRightMovingTexts = ArrayList<String>()
-    var defaultLookingForWayPrefix = ArrayList<String>()
-    val defaultTopMovingTexts = ArrayList<String>()
-    val defaultBottomMovingTexts = ArrayList<String>()
-    val unpassableDefaults = ArrayList<String>()
-    val unknownsDefaults = ArrayList<String>()
-    val defaultBehindsTexts = ArrayList<String>()
+    val defaultLeftMovingTexts = String()
+    val defaultRightMovingTexts = String()
+    var defaultLookingForWayPrefix = String()
+    val defaultTopMovingTexts = String()
+    val defaultBottomMovingTexts = String()
+    val defaultBehindsTexts = String()
 
     val tiles = ArrayList<ArrayList<MapTile>>()
+
+    //TODO move to database
     var events = ArrayList<Event>()
+    var biomes = ArrayList<Biome>()
 
-    class Event {
-        constructor() {
-            eventId = Random().nextLong()
+    fun getTile(currX: Int, currY: Int) : MapTile {
+        return tiles[currY][currX]
+    }
+
+    fun getUnpassableDefaults(tile: MapTile) : String {
+        val biome = biomes.firstOrNull { tile.biomeId == it.id }
+        return biome?.unpassabledefaults?.getRandItem() ?: ""
+    }
+
+    fun getRightCell(currX: Int, currY: Int, count : Int = 1) : MapTile? {
+        if (currX + count < tiles[currY].size) {
+            return tiles[currY][currX + count]
+        } else {
+            return null
         }
+    }
 
-        var eventText = String()
-        var probability = 1f
-        var eventId : Long = 0L
-        var isGlobal = false
+    fun getLeftCell(currX: Int, currY: Int, count : Int = 1) : MapTile? {
+        if (currX - count >= 0) {
+            return tiles[currY][currX - count]
+        } else {
+            return null
+        }
+    }
+
+    fun getTopCell(currX: Int, currY: Int, count : Int = 1) : MapTile? {
+        if (currY - count >= 0) {
+            return tiles[currY - count][currX]
+        } else {
+            return null
+        }
+    }
+
+    fun getBottomCell(currX: Int, currY: Int, count : Int = 1) : MapTile? {
+        if (currY + count < tiles.size) {
+            return tiles[currY + count][currX]
+        } else {
+            return null
+        }
     }
 }
