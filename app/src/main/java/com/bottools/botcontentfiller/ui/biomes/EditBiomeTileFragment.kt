@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bottools.botcontentfiller.R
+import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.BiomeTile
-import com.bottools.botcontentfiller.ui.edit_map.EditMapTileFragment
+import com.bottools.botcontentfiller.ui.editmap.EditMapTileFragment
 import com.bottools.botcontentfiller.ui.views.layoutchildren.AbstractChild
 import com.bottools.botcontentfiller.ui.views.layoutchildren.EditBooleanView
 import com.bottools.botcontentfiller.ui.views.layoutchildren.EditPercentView
@@ -16,16 +17,15 @@ import kotlinx.android.synthetic.main.edit_map_defaults_fragment.*
 
 class EditBiomeTileFragment : Fragment() {
 
-    private lateinit var biomeTile : BiomeTile
-
+    private var biomeTile : BiomeTile? = null
 
     companion object {
 
-        private const val TILE ="tile"
-        fun createInstance(tile: BiomeTile): EditMapTileFragment {
+        private const val TILE_ID ="tile_id"
+        fun createInstance(biomeTileId: Int): EditMapTileFragment {
             val fragment = EditMapTileFragment()
             val bundle = Bundle()
-            bundle.putSerializable(TILE, tile)
+            bundle.putInt(TILE_ID, biomeTileId)
             fragment.arguments = bundle
             return fragment
         }
@@ -33,7 +33,8 @@ class EditBiomeTileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        biomeTile = arguments?.getSerializable(TILE) as BiomeTile
+        val tileId = arguments?.getInt(TILE_ID)
+        biomeTile = DatabaseManager.getBiomeTile(tileId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,18 +45,19 @@ class EditBiomeTileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.onViewCreated(view, savedInstanceState)
         val context = context!!
 
-        val views = ArrayList<AbstractChild>()
-        views.add(EditSingleStringView(biomeTile.thisTileCustomDescription, context.getString(R.string.this_tile_descr), context))
-        views.add(EditSingleStringView(biomeTile.nextTileCustomDescription, context.getString(R.string.next_tile_descr), context))
-        views.add(EditSingleStringView(biomeTile.customFarBehindText, context.getString(R.string.far_behind_descr), context))
-        views.add(EditBooleanView(biomeTile.isUnpassable, context.getString(R.string.unpassable), context))
-        views.add(EditBooleanView(biomeTile.canSeeThrow, context.getString(R.string.can_see_throw), context))
-        views.add(EditPercentView(biomeTile.probability, context.getString(R.string.probability), context))
-        views.forEach {
-            it.attachToView(container)
+        biomeTile?.let { biomeTile ->
+            val views = ArrayList<AbstractChild>()
+            views.add(EditSingleStringView(biomeTile.thisTileCustomDescription, context.getString(R.string.this_tile_descr), context))
+            views.add(EditSingleStringView(biomeTile.nextTileCustomDescription, context.getString(R.string.next_tile_descr), context))
+            views.add(EditSingleStringView(biomeTile.customFarBehindText, context.getString(R.string.far_behind_descr), context))
+            views.add(EditBooleanView(biomeTile.isUnpassable, context.getString(R.string.unpassable), context))
+            views.add(EditBooleanView(biomeTile.canSeeThrow, context.getString(R.string.can_see_throw), context))
+            views.add(EditPercentView(biomeTile.probability, context.getString(R.string.probability), context))
+            views.forEach {
+                it.attachToView(container)
+            }
         }
     }
 }

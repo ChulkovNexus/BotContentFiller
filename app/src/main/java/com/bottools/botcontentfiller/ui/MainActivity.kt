@@ -4,7 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.bottools.botcontentfiller.R
-import com.bottools.botcontentfiller.ui.edit_map.ActivityEditMap
+import com.bottools.botcontentfiller.ui.biomes.ActivityEditBiomes
+import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
 
         editMapButton.setOnClickListener {
             startActivity(Intent(this, ActivityEditMap::class.java))
+        }
+        editBiomes.setOnClickListener {
+            startActivity(Intent(this, ActivityEditBiomes::class.java))
         }
     }
 }

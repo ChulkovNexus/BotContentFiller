@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.edit_map
+package com.bottools.botcontentfiller.ui.editmap
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,7 +13,6 @@ import com.bottools.botcontentfiller.ui.views.layoutchildren.EditSingleStringVie
 import kotlinx.android.synthetic.main.edit_map_defaults_fragment.*
 
 class EditMapTileFragment : Fragment() {
-
 
     companion object {
 
@@ -35,8 +34,8 @@ class EditMapTileFragment : Fragment() {
         tile = arguments?.getSerializable(TILE) as MapTile
         return view
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         super.onViewCreated(view, savedInstanceState)
         val context = context!!
         

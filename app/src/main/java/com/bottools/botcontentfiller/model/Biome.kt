@@ -8,9 +8,9 @@ import java.util.ArrayList
 class Biome : RealmObject(), Serializable {
 
     @PrimaryKey
-    val id = 0
-    val name = String()
-    val tiles = ArrayList<BiomeTile>()
-    val unpassabledefaults = ArrayList<String>()
+    var id = 0
+    var name = String()
+    var tiles = ArrayList<BiomeTile>()
+    var unpassabledefaults = ArrayList<String>()
 
 }

@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.edit_map
+package com.bottools.botcontentfiller.ui.editmap
 
 import android.os.Bundle
 import android.os.Environment

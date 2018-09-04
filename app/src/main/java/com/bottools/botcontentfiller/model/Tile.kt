@@ -7,6 +7,7 @@ import java.io.Serializable
 open class Tile: RealmObject(), Serializable{
 
     @PrimaryKey
+    var id = 0
     var thisTileCustomDescription : String? = null
     var canSeeThrow: Boolean? = null
     var isUnpassable = false

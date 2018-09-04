@@ -4,46 +4,92 @@ import android.R
 import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.text.TextUtils
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Biome
-import com.bottools.botcontentfiller.ui.edit_map.ActivityEditMap
-import com.bottools.botcontentfiller.ui.edit_map.EditMapTileFragment
+import com.bottools.botcontentfiller.model.BiomeTile
+import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
+import com.bottools.botcontentfiller.ui.editmap.EditMapTileFragment
+import com.bottools.botcontentfiller.utils.random
 
 class BiomeTilesListFragment : ListFragment() {
 
     companion object {
-        private const val BIOME ="biome"
+        private const val BIOME_ID ="biome_id"
 
-        fun createInstance(biome: Biome): EditMapTileFragment {
+        fun createInstance(biomeId: Int): EditMapTileFragment {
             val fragment = EditMapTileFragment()
             val bundle = Bundle()
-            bundle.putSerializable(BIOME, biome)
+            bundle.putInt(BIOME_ID, biomeId)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    private lateinit var biome : Biome
+    private lateinit var adapter :BiomeTilesAdapter
+    private var biome : Biome? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        biome = arguments?.getSerializable(BIOME) as Biome
+        setHasOptionsMenu(true)
+        val biomeId = arguments?.getInt(BIOME_ID)
+        if (biomeId != null) {
+            biome = DatabaseManager.getBiome(biomeId)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-            val adapter = ArrayAdapter(activity, R.layout.simple_list_item_1, biome.tiles.filter { !TextUtils.isEmpty(it.thisTileCustomDescription) }
-                    .map { it.thisTileCustomDescription })
+        biome?.let { biome ->
+            adapter = BiomeTilesAdapter(activity!!, { biomeTile->
+                openBiomTileFragment(biomeTile)
+            }, { biomeTile->
+                removeTile(biomeTile)
+            })
+            adapter.addAll(biome.tiles.filter { !TextUtils.isEmpty(it.thisTileCustomDescription) })
             listAdapter = adapter
+        }
     }
 
-    override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
-        super.onListItemClick(l, v, position, id)
-        val biomeTile = biome.tiles.filter { !TextUtils.isEmpty(it.thisTileCustomDescription) }[position]
-        val fragment = EditBiomeTileFragment.createInstance(biomeTile)
+    private fun removeTile(biomeTile: BiomeTile) {
+        biome?.let { biome ->
+            biome.tiles.remove(biomeTile)
+            adapter.remove(biomeTile)
+            DatabaseManager.removeBiomeTile(biomeTile)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+        inflater.inflate(com.bottools.botcontentfiller.R.menu.plus_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            com.bottools.botcontentfiller.R.id.plus-> {
+                addTile()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun addTile() {
+        val biomeTile = BiomeTile()
+        biomeTile.id = (0..Int.MAX_VALUE).random()
+        DatabaseManager.saveBiomeTile(biomeTile)
+        openBiomTileFragment(biomeTile)
+    }
+
+    private fun openBiomTileFragment(biomeTile: BiomeTile) {
+        val fragment = EditBiomeTileFragment.createInstance(biomeTile.id)
         val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
         transaction.addToBackStack("")
         transaction.replace(com.bottools.botcontentfiller.R.id.fragment_container, fragment, ActivityEditMap.FRAGMENT_TAG).commit()
     }

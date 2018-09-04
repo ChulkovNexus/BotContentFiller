@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.edit_map
+package com.bottools.botcontentfiller.ui.editmap
 
 import android.content.Context
 import android.os.Bundle
@@ -23,7 +23,6 @@ class EditMapDefaultsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.edit_map_defaults_fragment, container, false)
-        view.findViewById<View>(R.id.edit_unpassable_layout).visibility = View.GONE
         return view
     }
 

@@ -8,9 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.TextView
 import com.bottools.botcontentfiller.R
-import com.bottools.botcontentfiller.model.Biome
+import com.bottools.botcontentfiller.model.BiomeTile
 
-class BiomesAdapter(context: Context, val editBiomeListener : (Biome)-> Unit , val removeBiomeListener : (Biome)-> Unit ) : ArrayAdapter<Biome>(context, R.layout.adapter_layout_editing) {
+class BiomeTilesAdapter(context: Context, val editBiomeListener : (BiomeTile)-> Unit, val removeBiomeListener : (BiomeTile)-> Unit ) : ArrayAdapter<BiomeTile>(context, R.layout.adapter_layout_editing) {
 
     val inflater = LayoutInflater.from(context)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -32,8 +32,8 @@ class BiomesAdapter(context: Context, val editBiomeListener : (Biome)-> Unit , v
         val editButton = view.findViewById<ImageButton>(R.id.edit_button)
         val remove = view.findViewById<ImageButton>(R.id.remove_button)
         val descr = view.findViewById<TextView>(R.id.description)
-        fun bind(item: Biome) {
-            descr.text = item.name
+        fun bind(item: BiomeTile) {
+            descr.text = item.thisTileCustomDescription
             editButton.setOnClickListener({
                 editBiomeListener.invoke(item)
             })

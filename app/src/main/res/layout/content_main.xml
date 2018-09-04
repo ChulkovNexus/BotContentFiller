@@ -13,4 +13,9 @@
         android:text="@string/edit_map"
         android:layout_height="56dp"/>
 
+    <Button android:id="@+id/editBiomes"
+        android:layout_width="match_parent"
+        android:text="@string/edit_biomes"
+        android:layout_height="56dp"/>
+
 </android.support.constraint.ConstraintLayout>

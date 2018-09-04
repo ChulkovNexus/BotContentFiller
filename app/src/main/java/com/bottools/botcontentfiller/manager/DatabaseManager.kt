@@ -1,6 +1,7 @@
 package com.bottools.botcontentfiller.manager
 
 import com.bottools.botcontentfiller.model.Biome
+import com.bottools.botcontentfiller.model.BiomeTile
 import io.realm.Realm
 
 object DatabaseManager {
@@ -13,10 +14,48 @@ object DatabaseManager {
         return result
     }
 
-    fun saveBiomes(biome: Biome) {
+    fun removeBiome(biomeId: Int) {
         val realm = Realm.getDefaultInstance()
         realm.executeTransactionAsync  {
+            val biomeInBase = it.where(Biome::class.java).equalTo("id", biomeId).findFirst()
+            if (biomeInBase!=null) {
+                biomeInBase.deleteFromRealm()
+            }
+        }
+    }
+
+    fun getBiome(biomeId: Int): Biome? {
+        val realm = Realm.getDefaultInstance()
+        return realm.where(Biome::class.java).equalTo("id", biomeId).findFirst()
+    }
+
+    fun saveBiome(biome: Biome) {
+        val realm = Realm.getDefaultInstance()
+        realm.executeTransaction {
             it.insertOrUpdate(biome)
         }
     }
+
+    fun saveBiomeTile(biomeTile: BiomeTile) {
+        val realm = Realm.getDefaultInstance()
+        realm.executeTransaction {
+            it.insertOrUpdate(biomeTile)
+        }
+    }
+
+    fun getBiomeTile(tileId: Int?): BiomeTile? {
+        val realm = Realm.getDefaultInstance()
+        return realm.where(BiomeTile::class.java).equalTo("id", tileId).findFirst()
+    }
+
+    fun removeBiomeTile(biomeTile: BiomeTile) {
+        val realm = Realm.getDefaultInstance()
+        realm.executeTransactionAsync  {
+            val biomeTileInBase = it.where(BiomeTile::class.java).equalTo("id", biomeTile.id).findFirst()
+            if (biomeTileInBase!=null) {
+                biomeTileInBase.deleteFromRealm()
+            }
+        }
+    }
+
 }

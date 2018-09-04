@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.edit_map
+package com.bottools.botcontentfiller.ui.editmap
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.bottools.botcontentfiller.model.Event
-import com.bottools.botcontentfiller.model.WorldMap
 
 
 class EventsFragment : ListFragment() {

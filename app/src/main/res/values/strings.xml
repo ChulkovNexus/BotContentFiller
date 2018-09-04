@@ -43,4 +43,8 @@
     <string name="next_tile_descr">Как этот тайл виден со стороны</string>
     <string name="this_tile_descr">Описание тайла</string>
     <string name="far_behind_descr">Как этот тайл виден издалека</string>
+    <string name="plus">plus</string>
+    <string name="name">Название</string>
+    <string name="edit_tiles">Edit tiles</string>
+    <string name="edit_biomes">Biomes</string>
 </resources>
