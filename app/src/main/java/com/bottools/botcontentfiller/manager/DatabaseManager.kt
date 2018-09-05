@@ -26,7 +26,12 @@ object DatabaseManager {
 
     fun getBiome(biomeId: Int): Biome? {
         val realm = Realm.getDefaultInstance()
-        return realm.where(Biome::class.java).equalTo("id", biomeId).findFirst()
+        val findFirst = realm.where(Biome::class.java).equalTo("id", biomeId).findFirst()
+        return if (findFirst!=null) {
+            realm.copyFromRealm(findFirst)
+        } else {
+            null
+        }
     }
 
     fun saveBiome(biome: Biome) {
@@ -45,7 +50,12 @@ object DatabaseManager {
 
     fun getBiomeTile(tileId: Int?): BiomeTile? {
         val realm = Realm.getDefaultInstance()
-        return realm.where(BiomeTile::class.java).equalTo("id", tileId).findFirst()
+        val findFirst = realm.where(BiomeTile::class.java).equalTo("id", tileId).findFirst()
+        return if (findFirst!=null) {
+            realm.copyFromRealm(findFirst)
+        } else {
+            null
+        }
     }
 
     fun removeBiomeTile(biomeTile: BiomeTile) {

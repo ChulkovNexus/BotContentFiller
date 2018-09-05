@@ -1,24 +1,39 @@
 package com.bottools.botcontentfiller.logic.viewver
 
+import com.bottools.botcontentfiller.manager.DatabaseManager
+import com.bottools.botcontentfiller.model.Biome
 import com.bottools.botcontentfiller.model.MapTile
 import com.bottools.botcontentfiller.model.WorldMap
+import com.bottools.botcontentfiller.utils.getRandItem
+import java.util.ArrayList
 
 open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
     var visionRange = 2
+
+    var biomes = ArrayList<Biome>()
+
+    init {
+        biomes = DatabaseManager.getBiomes()
+    }
+
+    fun getUnpassableDefaults(tile: MapTile) : String {
+        val biome = biomes.firstOrNull { tile.biomeId == it.id }
+        return biome?.unpassabledefaults?.getRandItem() ?: ""
+    }
 
     private fun getSideText(tile: MapTile, count: Int, function: () -> MapTile?) : CharSequence {
         var text = ""
         text += map.defaultTopMovingTexts
         val topCell = function.invoke()
         if (topCell == null) {
-            text += map.getUnpassableDefaults(tile)
-        } else if (topCell.isUnpassable) {
-            text += map.getUnpassableDefaults(topCell)
+            text += getUnpassableDefaults(tile)
+        } else if (topCell.isUnpassable == true) {
+            text += getUnpassableDefaults(topCell)
             if (seeThrowCondition(topCell) && visionRange > count) {
                 getTopText(tile, count+1)
             }
         } else {
-            text += topCell.nextTileCustomDescription ?: " not filled "
+            text += topCell.nextTileCustomDescription ?: " -not filled- "
             if (seeThrowCondition(topCell) && visionRange > count) {
                 getTopText(tile, count+1)
             }
@@ -45,7 +60,7 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
     }
 
     override fun getCurrentTileText(tile: MapTile): CharSequence {
-        return tile.thisTileCustomDescription ?: " not filled "
+        return tile.thisTileCustomDescription ?: " -not filled- "
     }
 
 }

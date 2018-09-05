@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Biome
+import com.bottools.botcontentfiller.ui.biomes.biomtiles.BiomeTilesListFragment
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
-import com.bottools.botcontentfiller.ui.editmap.EditMapTileFragment
-import com.bottools.botcontentfiller.ui.views.layoutchildren.*
+import com.bottools.botcontentfiller.ui.views.layoutchildren.AbstractChild
+import com.bottools.botcontentfiller.ui.views.layoutchildren.ButtonChild
+import com.bottools.botcontentfiller.ui.views.layoutchildren.EditSingleStringView
+import com.bottools.botcontentfiller.ui.views.layoutchildren.EditStringArrayView
 import kotlinx.android.synthetic.main.edit_map_defaults_fragment.*
 
 class EditBiomeFragment : Fragment() {
@@ -18,8 +21,8 @@ class EditBiomeFragment : Fragment() {
     companion object {
         private const val BIOME_ID = "biome_id"
 
-        fun createInstance(biomeId: Int): EditMapTileFragment {
-            val fragment = EditMapTileFragment()
+        fun createInstance(biomeId: Int): EditBiomeFragment {
+            val fragment = EditBiomeFragment()
             val bundle = Bundle()
             bundle.putInt(BIOME_ID, biomeId)
             fragment.arguments = bundle
@@ -39,10 +42,15 @@ class EditBiomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.edit_map_defaults_fragment, container, false)
-        view.findViewById<View>(R.id.edit_unpassable_layout).visibility = View.GONE
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.setTitle(R.string.biome_editing)
+    }
+
+    private lateinit var nameField : EditSingleStringView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val context = context!!
@@ -52,14 +60,20 @@ class EditBiomeFragment : Fragment() {
             views.add(ButtonChild(context.getString(R.string.edit_tiles), {
                 openTilesFragment()
             }, context))
-            views.add(EditSingleStringView(biome.name, context.getString(R.string.name), context))
+            nameField = EditSingleStringView(biome.name, context.getString(R.string.name), context)
+            views.add(nameField)
             views.add(EditStringArrayView(biome.unpassabledefaults, context.getString(R.string.edit_unpassable_defaults), context))
 
             views.forEach {
                 it.attachToView(container)
             }
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        biome!!.name = nameField.str!!
+        DatabaseManager.saveBiome(biome!!)
     }
 
     private fun openTilesFragment() {

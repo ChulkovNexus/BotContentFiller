@@ -15,4 +15,10 @@
         android:title="@string/edit_map_defaults"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_fill_random_from_biome"
+        android:orderInCategory="100"
+        android:title="@string/action_fill_random_from_biome"
+        app:showAsAction="never" />
+
 </menu>

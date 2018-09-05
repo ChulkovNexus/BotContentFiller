@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.biomes
+package com.bottools.botcontentfiller.ui.biomes.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -47,4 +47,10 @@
     <string name="name">Название</string>
     <string name="edit_tiles">Edit tiles</string>
     <string name="edit_biomes">Biomes</string>
+    <string name="from_biome">From biome</string>
+    <string name="action_fill_random_from_biome">Заполнить рандомно из биомов</string>
+    <string name="biomes_list">Список биомов</string>
+    <string name="biome_editing">Редактирование биома</string>
+    <string name="biome_tiles_list">Список тайлов биома</string>
+    <string name="biome_tile_editing">Редактирование тайла биома</string>
 </resources>

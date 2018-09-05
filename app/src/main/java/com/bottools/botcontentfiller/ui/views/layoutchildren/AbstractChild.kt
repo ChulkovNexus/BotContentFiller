@@ -8,7 +8,12 @@ import android.widget.LinearLayout
 
 abstract class AbstractChild  @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
+    var changeListener : ChangeListener? = null
     fun attachToView(container: ViewGroup) {
         container.addView(this)
+    }
+
+    interface ChangeListener {
+        fun onChange()
     }
 }

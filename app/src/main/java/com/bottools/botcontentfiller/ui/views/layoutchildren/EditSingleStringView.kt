@@ -12,13 +12,11 @@ import com.bottools.botcontentfiller.R
 class EditSingleStringView @JvmOverloads constructor (var str : String?, var descr: String?, context: Context, attrs: AttributeSet? = null) : AbstractChild(context, attrs) {
 
     init {
-        if (str==null) str = String()
-
+        if (str==null) str = ""
         val view = LayoutInflater.from(context).inflate(R.layout.layout_string_filler, this, false)
         val descriptionTv = view.findViewById<TextView>(R.id.description)
         val editText = view.findViewById<EditText>(R.id.value)
         descriptionTv.text = descr
-        addView(editText)
         editText.setText(str)
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

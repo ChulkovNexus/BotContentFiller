@@ -1,6 +1,5 @@
 package com.bottools.botcontentfiller.model
 
-import com.bottools.botcontentfiller.utils.getRandItem
 import java.util.*
 
 class WorldMap {
@@ -24,16 +23,11 @@ class WorldMap {
 
     //TODO move to database
     var events = ArrayList<Event>()
-    var biomes = ArrayList<Biome>()
 
     fun getTile(currX: Int, currY: Int) : MapTile {
         return tiles[currY][currX]
     }
 
-    fun getUnpassableDefaults(tile: MapTile) : String {
-        val biome = biomes.firstOrNull { tile.biomeId == it.id }
-        return biome?.unpassabledefaults?.getRandItem() ?: ""
-    }
 
     fun getRightCell(currX: Int, currY: Int, count : Int = 1) : MapTile? {
         if (currX + count < tiles[currY].size) {

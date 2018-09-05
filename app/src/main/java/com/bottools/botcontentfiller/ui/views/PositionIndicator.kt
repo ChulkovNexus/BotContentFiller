@@ -68,7 +68,7 @@ class PositionIndicator : FrameLayout {
         mFloorPaint!!.color = Color.BLACK
         map!!.tiles.forEachIndexed {i, it ->
             map!!.tiles[i].forEachIndexed { j, it ->
-                if (map!!.tiles[i][j].isUnpassable) {
+                if (map!!.tiles[i][j].isUnpassable == true) {
                     canvas?.drawRect(xBlockSize * i, yBlockSize * j, xBlockSize * (i + 1), yBlockSize * (j + 1), mFloorPaint)
                 }
             }

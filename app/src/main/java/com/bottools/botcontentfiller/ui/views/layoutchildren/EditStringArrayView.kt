@@ -12,14 +12,21 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bottools.botcontentfiller.R
+import io.realm.RealmList
 
-class EditStringArrayView @JvmOverloads constructor (strArray : ArrayList<String>, description: String, context: Context, attrs: AttributeSet? = null) : AbstractChild(context, attrs) {
+class EditStringArrayView  : AbstractChild{
 
-    init {
+//    @JvmOverloads
+//    constructor (strArray : ArrayList<String>, description: String, context: Context, attrs: AttributeSet? = null): super(context, attrs){
+//        fillLayout(this, strArray, description)
+//    }
+
+    @JvmOverloads
+    constructor (strArray : RealmList<String>, description: String, context: Context, attrs: AttributeSet? = null): super(context, attrs){
         fillLayout(this, strArray, description)
     }
 
-    fun fillLayout(container: LinearLayout, list: ArrayList<String>, description: String) {
+    fun fillLayout(container: LinearLayout, list: RealmList<String>, description: String) {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_list_filler, container, false)
         val listDescription = view.findViewById<TextView>(R.id.list_discription)
         val innerContainer = view.findViewById<LinearLayout>(R.id.container)
@@ -35,7 +42,7 @@ class EditStringArrayView @JvmOverloads constructor (strArray : ArrayList<String
         container.addView(view)
     }
 
-    private fun addDefaultEditable(container: LinearLayout, list: ArrayList<String>, default: String? = null) {
+    private fun addDefaultEditable(container: LinearLayout, list: RealmList<String>, default: String? = null) {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_default_editable, container, false)
 
         val editText = view.findViewById<EditText>(R.id.edit_text)

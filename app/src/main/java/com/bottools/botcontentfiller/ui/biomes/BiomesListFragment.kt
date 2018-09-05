@@ -10,6 +10,7 @@ import android.widget.ListView
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Biome
+import com.bottools.botcontentfiller.ui.biomes.adapters.BiomesAdapter
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
 import com.bottools.botcontentfiller.utils.random
 
@@ -26,7 +27,7 @@ class BiomesListFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        activity?.setTitle(R.string.biomes_list)
         biomes = DatabaseManager.getBiomes()
         adapter = BiomesAdapter(activity!!, {
             openBiomeTilesListFragment(it)
