@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import com.bottools.botcontentfiller.model.Biome
 import com.bottools.botcontentfiller.model.WorldMap
 
 class PositionIndicator : FrameLayout {
@@ -19,6 +20,7 @@ class PositionIndicator : FrameLayout {
     private var posY = 0
     private var posX = 0
     private var map: WorldMap? = null
+    val biomes = ArrayList<Biome>()
 
     init {
         setWillNotDraw(false)
@@ -48,28 +50,33 @@ class PositionIndicator : FrameLayout {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        if (map==null)
+        if (map == null)
             return
 
         val xLinesCount = map!!.tiles.size
         val yLinesCount = map!!.tiles[0].size
 
-        val xBlockSize = measuredWidth.toFloat()/ xLinesCount
-        val yBlockSize = measuredHeight.toFloat()/ yLinesCount
+        val xBlockSize = measuredWidth.toFloat() / xLinesCount
+        val yBlockSize = measuredHeight.toFloat() / yLinesCount
         canvas?.drawColor(Color.GREEN)
         for (i in 0..xLinesCount) {
             canvas?.drawLine((xBlockSize * i), 0f, (xBlockSize * i), measuredHeight.toFloat(), linePaint)
         }
         for (i in 0..yLinesCount) {
-            canvas?.drawLine(0f, yBlockSize * i, measuredWidth.toFloat(),yBlockSize * i, linePaint)
+            canvas?.drawLine(0f, yBlockSize * i, measuredWidth.toFloat(), yBlockSize * i, linePaint)
         }
         mFloorPaint!!.color = Color.RED
-        canvas?.drawRect(xBlockSize * posX, yBlockSize * posY,xBlockSize * (posX+1), yBlockSize * (posY + 1), mFloorPaint)
-        mFloorPaint!!.color = Color.BLACK
-        map!!.tiles.forEachIndexed {i, it ->
+        canvas?.drawRect(xBlockSize * posX, yBlockSize * posY, xBlockSize * (posX + 1), yBlockSize * (posY + 1), mFloorPaint)
+        map!!.tiles.forEachIndexed { i, it ->
             map!!.tiles[i].forEachIndexed { j, it ->
-                if (map!!.tiles[i][j].isUnpassable == true) {
+                val biome = biomes.firstOrNull { it.id == map!!.tiles[i][j].biomeId }
+                if (biome != null) {
+                    mFloorPaint!!.color = biome.color
                     canvas?.drawRect(xBlockSize * i, yBlockSize * j, xBlockSize * (i + 1), yBlockSize * (j + 1), mFloorPaint)
+                }
+                if (map!!.tiles[i][j].isUnpassable == true) {
+                    mFloorPaint!!.color = Color.BLACK
+                    canvas?.drawCircle((xBlockSize * i) + (xBlockSize / 2), (yBlockSize * j) + (yBlockSize / 2), Math.min(yBlockSize, xBlockSize) / 2, mFloorPaint)
                 }
             }
         }

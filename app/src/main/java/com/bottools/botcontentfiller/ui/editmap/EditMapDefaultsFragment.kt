@@ -23,6 +23,7 @@ class EditMapDefaultsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.edit_map_defaults_fragment, container, false)
+        activity!!.title = getString(R.string.defaults_filling)
         return view
     }
 

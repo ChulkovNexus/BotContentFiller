@@ -1,12 +1,12 @@
 package com.bottools.botcontentfiller.model
 
+import com.bottools.botcontentfiller.utils.getRandItem
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 
 open class MapTile : RealmObject, Serializable {
-
 
     @PrimaryKey
     var id = 0
@@ -28,4 +28,16 @@ open class MapTile : RealmObject, Serializable {
     var isUnpassable : Boolean? = false
     var nextTileCustomDescription : String? = null
     var customFarBehindText : String? = null
+
+    fun fillFromBiome(selectedBiome: Biome) {
+        biomeId = selectedBiome.id
+        val randTile = selectedBiome.tiles.getRandItem()
+        randTile?.let {
+            canSeeThrow = randTile.canSeeThrow
+            isUnpassable = randTile.isUnpassable
+            customFarBehindText = randTile.customFarBehindText
+            thisTileCustomDescription = randTile.thisTileCustomDescription
+            nextTileCustomDescription  = randTile.nextTileCustomDescription
+        }
+    }
 }

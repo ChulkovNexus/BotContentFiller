@@ -2,6 +2,8 @@ package com.bottools.botcontentfiller.manager
 
 import com.bottools.botcontentfiller.model.Biome
 import com.bottools.botcontentfiller.model.BiomeTile
+import com.bottools.botcontentfiller.model.MapTile
+import com.bottools.botcontentfiller.model.WorldMap
 import io.realm.Realm
 
 object DatabaseManager {
@@ -65,6 +67,31 @@ object DatabaseManager {
             if (biomeTileInBase!=null) {
                 biomeTileInBase.deleteFromRealm()
             }
+        }
+    }
+
+    fun loadMap(): WorldMap? {
+        val realm = Realm.getDefaultInstance()
+        val map = realm.where(WorldMap::class.java).findFirst()
+        return if (map!=null) {
+            val tiles = realm.where(MapTile::class.java).findAll()
+            val copyFromRealm = realm.copyFromRealm(map)
+            copyFromRealm.fillFromBase(tiles)
+            copyFromRealm
+        } else {
+            null
+        }
+    }
+
+    fun saveMap(map: WorldMap) {
+        val realm = Realm.getDefaultInstance()
+        realm.executeTransaction {
+            realm.copyToRealmOrUpdate(map)
+            val tiles = ArrayList<MapTile>()
+            map.tiles.forEach {
+                tiles.addAll(it)
+            }
+            realm.copyToRealmOrUpdate(tiles)
         }
     }
 

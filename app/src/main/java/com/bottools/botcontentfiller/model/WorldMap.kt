@@ -1,8 +1,12 @@
 package com.bottools.botcontentfiller.model
 
-import java.util.*
+import io.realm.RealmList
+import io.realm.RealmObject
+import io.realm.RealmResults
+import io.realm.annotations.Ignore
+import io.realm.annotations.PrimaryKey
 
-class WorldMap {
+open class WorldMap : RealmObject() {
 
     fun initMap(xSize: Int, ySize: Int) {
         for (i in 0 until ySize) {
@@ -12,17 +16,30 @@ class WorldMap {
             }
         }
     }
-    val defaultLeftMovingTexts = String()
-    val defaultRightMovingTexts = String()
-    var defaultLookingForWayPrefix = String()
-    val defaultTopMovingTexts = String()
-    val defaultBottomMovingTexts = String()
-    val defaultBehindsTexts = String()
 
-    val tiles = ArrayList<ArrayList<MapTile>>()
+    fun fillFromBase(listFromBase : RealmResults<MapTile>) {
+        val maxPosX = listFromBase.max("posX")!!
+        val maxPosY = listFromBase.max("posY")!!
+        initMap(maxPosX.toInt() + 1, maxPosY.toInt() + 1)
+        listFromBase.forEach {
+            tiles[it.posY][it.posX] = it
+        }
+    }
+
+    @PrimaryKey
+    var id = 0x0001 // single instance in base
+    var defaultLeftMovingTexts = String()
+    var defaultRightMovingTexts = String()
+    var defaultLookingForWayPrefix = String()
+    var defaultTopMovingTexts = String()
+    var defaultBottomMovingTexts = String()
+    var defaultBehindsTexts = String()
+
+    @Ignore
+    var tiles = ArrayList<ArrayList<MapTile>>()
 
     //TODO move to database
-    var events = ArrayList<Event>()
+    var events = RealmList<Event>()
 
     fun getTile(currX: Int, currY: Int) : MapTile {
         return tiles[currY][currX]

@@ -33,7 +33,7 @@
     <string name="next_bottom_tile_descr">вниз виднеется</string>
     <string name="next_bottom_behind_text">\"За ним\" кастомный текст вниз</string>
     <string name="far_behind_bottom_text">описание того что далеко вниз</string>
-    <string name="edit_tile">Edit texts</string>
+    <string name="edit_tile">Заполнить вручную</string>
     <string name="events">Эвенты</string>
     <string name="is_global">global</string>
     <string name="probability">Процент вероятности</string>
@@ -53,4 +53,11 @@
     <string name="biome_editing">Редактирование биома</string>
     <string name="biome_tiles_list">Список тайлов биома</string>
     <string name="biome_tile_editing">Редактирование тайла биома</string>
+    <string name="biome_color">Цвет биома</string>
+    <string name="fillFromBiome">Заполнить биомом</string>
+    <string name="select_biome_before">Выбери биом сначала</string>
+    <string name="export">Export</string>
+    <string name="action_import">Import</string>
+    <string name="tile_filling">Заполнение тайла вручную</string>
+    <string name="defaults_filling">Заполнение общих строк</string>
 </resources>

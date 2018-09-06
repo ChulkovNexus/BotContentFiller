@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.bottools.botcontentfiller.ui.MainActivity">
+
+    <!--<item-->
+        <!--android:id="@+id/action_save_map"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/save_map"-->
+        <!--app:showAsAction="never" />-->
+
+    <item
+        android:id="@+id/action_edit_map_defaults"
+        android:orderInCategory="100"
+        android:title="@string/edit_map_defaults"
+        app:showAsAction="never" />
+
+    <!--<item-->
+        <!--android:id="@+id/action_fill_random_from_biome"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_fill_random_from_biome"-->
+        <!--app:showAsAction="never" />-->
+
+</menu>

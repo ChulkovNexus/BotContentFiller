@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import com.bottools.botcontentfiller.R
+import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.WorldMap
 import com.google.gson.Gson
 import java.io.*
@@ -29,29 +30,21 @@ class ActivityEditMap : AppCompatActivity() {
     }
 
     private fun openOrCreateMap() {
-        val file = File(Environment.getExternalStorageDirectory().path + File.separator + "TestMap.json")
-        if (!file.exists()) {
-            file.createNewFile()
-        } else {
-            val outStringBuf = StringBuffer()
-            val fIn = FileInputStream(file)
-            val isr = InputStreamReader(fIn)
-            val inBuff = BufferedReader(isr)
-            var inputLine = inBuff.readLine()
-            while (inputLine != null) {
-                outStringBuf.append(inputLine)
-                outStringBuf.append("\n")
-                inputLine = inBuff.readLine()
-            }
-            inBuff.close()
-            val gson = Gson()
-            map = gson.fromJson(outStringBuf.toString(), WorldMap::class.java)
-        }
-        if (map == null) {
+        val loadMap = DatabaseManager.loadMap()
+        if (loadMap == null) {
             map = WorldMap()
             if (map!!.tiles.isEmpty()) {
                 map!!.initMap(20, 20)
             }
+            DatabaseManager.saveMap(map!!)
+        } else {
+            map = loadMap
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        DatabaseManager.saveMap(map!!)
+    }
+
 }

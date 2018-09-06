@@ -10,10 +10,7 @@ import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Biome
 import com.bottools.botcontentfiller.ui.biomes.biomtiles.BiomeTilesListFragment
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
-import com.bottools.botcontentfiller.ui.views.layoutchildren.AbstractChild
-import com.bottools.botcontentfiller.ui.views.layoutchildren.ButtonChild
-import com.bottools.botcontentfiller.ui.views.layoutchildren.EditSingleStringView
-import com.bottools.botcontentfiller.ui.views.layoutchildren.EditStringArrayView
+import com.bottools.botcontentfiller.ui.views.layoutchildren.*
 import kotlinx.android.synthetic.main.edit_map_defaults_fragment.*
 
 class EditBiomeFragment : Fragment() {
@@ -51,6 +48,7 @@ class EditBiomeFragment : Fragment() {
     }
 
     private lateinit var nameField : EditSingleStringView
+    private lateinit var colorField : EditColorView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val context = context!!
@@ -61,7 +59,9 @@ class EditBiomeFragment : Fragment() {
                 openTilesFragment()
             }, context))
             nameField = EditSingleStringView(biome.name, context.getString(R.string.name), context)
+            colorField = EditColorView(biome.color, context.getString(R.string.biome_color), context)
             views.add(nameField)
+            views.add(colorField)
             views.add(EditStringArrayView(biome.unpassabledefaults, context.getString(R.string.edit_unpassable_defaults), context))
 
             views.forEach {
@@ -73,6 +73,7 @@ class EditBiomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         biome!!.name = nameField.str!!
+        biome!!.color = colorField.color!!
         DatabaseManager.saveBiome(biome!!)
     }
 

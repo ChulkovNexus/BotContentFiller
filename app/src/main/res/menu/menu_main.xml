@@ -1,24 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.bottools.botcontentfiller.ui.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <item
-        android:id="@+id/action_save_map"
+        android:id="@+id/action_export"
         android:orderInCategory="100"
-        android:title="@string/save_map"
+        android:title="@string/export"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_edit_map_defaults"
+        android:id="@+id/action_import"
         android:orderInCategory="100"
-        android:title="@string/edit_map_defaults"
+        android:title="@string/action_import"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_fill_random_from_biome"
-        android:orderInCategory="100"
-        android:title="@string/action_fill_random_from_biome"
-        app:showAsAction="never" />
 
 </menu>

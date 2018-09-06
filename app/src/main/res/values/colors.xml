@@ -3,4 +3,24 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="biome_color1">#f26363</color>
+    <color name="biome_color2">#f2b229</color>
+    <color name="biome_color3">#66ae3a</color>
+    <color name="biome_color4">#34b2dc</color>
+    <color name="biome_color5">#394bc2</color>
+    <color name="biome_color6">#736b6b</color>
+    <color name="biome_color7">#ffffff</color>
+    <color name="biome_color8">#302c0b</color>
+
+    <array name="colors_arrays">
+            <item>@color/biome_color1</item>
+            <item>@color/biome_color2</item>
+            <item>@color/biome_color3</item>
+            <item>@color/biome_color4</item>
+            <item>@color/biome_color5</item>
+            <item>@color/biome_color6</item>
+            <item>@color/biome_color7</item>
+            <item>@color/biome_color8</item>
+    </array>
 </resources>

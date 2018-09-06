@@ -29,7 +29,10 @@ class EventsFragment : ListFragment() {
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
-        listener?.eventChoosed(map!!.events[position])
+        val event = map!!.events[position]
+        event?.let {
+            listener?.eventChoosed(it)
+        }
     }
 
     interface EventChoosedListener {

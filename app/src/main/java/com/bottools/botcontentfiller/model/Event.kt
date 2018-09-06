@@ -1,9 +1,11 @@
 package com.bottools.botcontentfiller.model
 
+import io.realm.RealmObject
 import java.util.*
 
-class Event {
-    constructor() {
+open class Event : RealmObject() {
+
+    fun initEventId() {
         eventId = Random().nextLong()
     }
 
