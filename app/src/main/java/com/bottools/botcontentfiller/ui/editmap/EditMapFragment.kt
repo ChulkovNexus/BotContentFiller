@@ -85,8 +85,11 @@ class EditMapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity!!.title = "0:0"
+        activity!!.title = "$currentPositionX:$currentPositionY"
+        positionIndicator.biomes.clear()
+        positionIndicator.biomes.addAll(biomesList)
         positionIndicator.setSize(map!!)
+        positionIndicator.setPosition(currentPositionX, currentPositionY)
         edit.setOnClickListener {
             val fragment = EditMapTileFragment.createInstance(map!!.getTile(currentPositionX, currentPositionY))
             val transaction = activity!!.supportFragmentManager.beginTransaction()
@@ -97,6 +100,7 @@ class EditMapFragment : Fragment() {
         fillFromBiome.setOnClickListener {
             fillFromBiome()
         }
+
         biomes_spinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, biomesList.map { it.name })
         biomes_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -134,7 +138,7 @@ class EditMapFragment : Fragment() {
             }
         }
         go_left.setOnClickListener {
-            if (currentPositionX >= 0) {
+            if (currentPositionX > 0) {
                 currentPositionX--
                 positionIndicator.setPosition(currentPositionX, currentPositionY)
                 activity!!.title = "$currentPositionX:$currentPositionY"

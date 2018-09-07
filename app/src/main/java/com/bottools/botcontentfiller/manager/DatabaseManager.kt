@@ -74,9 +74,11 @@ object DatabaseManager {
         val realm = Realm.getDefaultInstance()
         val map = realm.where(WorldMap::class.java).findFirst()
         return if (map!=null) {
-            val tiles = realm.where(MapTile::class.java).findAll()
             val copyFromRealm = realm.copyFromRealm(map)
-            copyFromRealm.fillFromBase(tiles)
+            val tiles = realm.where(MapTile::class.java).findAll()
+            if (!tiles.isEmpty()) {
+                copyFromRealm.fillFromBase(realm.copyFromRealm(tiles).toList())
+            }
             copyFromRealm
         } else {
             null

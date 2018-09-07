@@ -5,8 +5,6 @@ import android.support.v4.app.ListFragment
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.ListView
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Biome
@@ -18,7 +16,7 @@ class BiomesListFragment : ListFragment() {
 
     var listener: BiomeChoosedListener? = null
     private var biomes = ArrayList<Biome>()
-    private lateinit var adapter : BiomesAdapter
+    private lateinit var adapter: BiomesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +28,9 @@ class BiomesListFragment : ListFragment() {
         activity?.setTitle(R.string.biomes_list)
         biomes = DatabaseManager.getBiomes()
         adapter = BiomesAdapter(activity!!, {
+            listener?.biomeChoosed(it)
+            activity?.onBackPressed()
+        }, {
             openBiomeTilesListFragment(it)
         }, {
             removeBiome(it)
@@ -48,7 +49,7 @@ class BiomesListFragment : ListFragment() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.plus-> {
+            R.id.plus -> {
                 addBiome()
                 true
             }
@@ -76,11 +77,6 @@ class BiomesListFragment : ListFragment() {
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
         transaction.addToBackStack("")
         transaction.replace(com.bottools.botcontentfiller.R.id.fragment_container, fragment, ActivityEditMap.FRAGMENT_TAG).commit()
-    }
-
-    override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
-        super.onListItemClick(l, v, position, id)
-        listener?.biomeChoosed(biomes[position])
     }
 
     interface BiomeChoosedListener {

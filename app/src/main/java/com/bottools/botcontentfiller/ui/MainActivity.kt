@@ -1,6 +1,9 @@
 package com.bottools.botcontentfiller.ui
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
@@ -19,6 +22,10 @@ import java.io.*
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val EXP_REQ = 0x001
+        private const val IMP_REQ = 0x002
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,14 +48,39 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_export-> {
-                export()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), EXP_REQ)
+                } else {
+                    export()
+                }
                 true
             }
             R.id.action_import-> {
-                actionImport()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), IMP_REQ)
+                } else {
+                    actionImport()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            IMP_REQ -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    actionImport()
+                }
+                return
+            }
+            EXP_REQ -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    export()
+                }
+                return
+            }
         }
     }
 

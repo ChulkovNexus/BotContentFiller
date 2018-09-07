@@ -14,7 +14,7 @@
     <string name="edit_right_defaults">Edit right defaults</string>
     <string name="edit_bottom_defaults">Edit bottom defaults</string>
     <string name="add">Add</string>
-    <string name="edit_unpassable_defaults">Edit unpassable defaults</string>
+    <string name="edit_unpassable_defaults">Текст для непроходимой местности</string>
     <string name="edit_looking_for_way_defaults">рассказ о том как ты искал пути</string>
     <string name="custom_looking_for_way_prefix">Кастомный рассказ о поиске пути</string>
     <string name="custom_description">Кастомный рассказ об этом тайле</string>
@@ -60,4 +60,5 @@
     <string name="action_import">Import</string>
     <string name="tile_filling">Заполнение тайла вручную</string>
     <string name="defaults_filling">Заполнение общих строк</string>
+    <string name="biome_title">Биом:</string>
 </resources>

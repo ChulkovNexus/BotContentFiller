@@ -76,8 +76,8 @@ class EditMapTileFragment : Fragment(), AbstractChild.ChangeListener {
     }
 
     private fun fillFromBiome(biome: Biome) {
-        val randTile = biome.tiles.getRandItem()
         tile.biomeId = biome.id
+        val randTile = biome.tiles.getRandItem()
         randTile?.let { randTile ->
             tile.thisTileCustomDescription = randTile.thisTileCustomDescription
             tile.nextTileCustomDescription = randTile.nextTileCustomDescription

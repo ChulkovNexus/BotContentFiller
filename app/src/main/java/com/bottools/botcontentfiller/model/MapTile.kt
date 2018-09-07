@@ -15,6 +15,7 @@ open class MapTile : RealmObject, Serializable {
     constructor(posX: Int, posY: Int) : super() {
         this.posX = posX
         this.posY = posY
+        id = "${posX + 1000}${posY + 1000}".toInt()
     }
 
     var posX = 0

@@ -17,10 +17,10 @@ open class WorldMap : RealmObject() {
         }
     }
 
-    fun fillFromBase(listFromBase : RealmResults<MapTile>) {
-        val maxPosX = listFromBase.max("posX")!!
-        val maxPosY = listFromBase.max("posY")!!
-        initMap(maxPosX.toInt() + 1, maxPosY.toInt() + 1)
+    fun fillFromBase(listFromBase : List<MapTile>) {
+        val maxPosX = listFromBase.maxBy { it.posX }?.posX ?: 0
+        val maxPosY = listFromBase.maxBy { it.posY }?.posY ?: 0
+        initMap(maxPosX + 1, maxPosY + 1)
         listFromBase.forEach {
             tiles[it.posY][it.posX] = it
         }
@@ -34,6 +34,7 @@ open class WorldMap : RealmObject() {
     var defaultTopMovingTexts = String()
     var defaultBottomMovingTexts = String()
     var defaultBehindsTexts = String()
+    var defaultUnpassableText = String()
 
     @Ignore
     var tiles = ArrayList<ArrayList<MapTile>>()

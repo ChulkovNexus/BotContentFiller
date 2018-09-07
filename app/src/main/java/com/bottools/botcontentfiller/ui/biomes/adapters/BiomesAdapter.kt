@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.model.Biome
 
-class BiomesAdapter(context: Context, val editBiomeListener : (Biome)-> Unit , val removeBiomeListener : (Biome)-> Unit ) : ArrayAdapter<Biome>(context, R.layout.adapter_layout_editing) {
+class BiomesAdapter(context: Context,  val selectBiomeListener : (Biome)-> Unit , val editBiomeListener : (Biome)-> Unit , val removeBiomeListener : (Biome)-> Unit ) : ArrayAdapter<Biome>(context, R.layout.adapter_layout_editing) {
 
     val inflater = LayoutInflater.from(context)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -36,6 +36,9 @@ class BiomesAdapter(context: Context, val editBiomeListener : (Biome)-> Unit , v
             descr.text = item.name
             editButton.setOnClickListener({
                 editBiomeListener.invoke(item)
+            })
+            view.setOnClickListener({
+                selectBiomeListener.invoke(item)
             })
             remove.setOnClickListener({
                 removeBiomeListener.invoke(item)

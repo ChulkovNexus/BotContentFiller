@@ -21,42 +21,57 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
         return biome?.unpassabledefaults?.getRandItem() ?: ""
     }
 
-    private fun getSideText(tile: MapTile, count: Int, function: () -> MapTile?) : CharSequence {
+    private fun getSideText(tile: MapTile, range: Int, function: (Int) -> MapTile?) : CharSequence {
         var text = ""
-        text += map.defaultTopMovingTexts
-        val topCell = function.invoke()
-        if (topCell == null) {
+        val nextCell = function.invoke(range)
+        if (nextCell == null) {
             text += getUnpassableDefaults(tile)
-        } else if (topCell.isUnpassable == true) {
-            text += getUnpassableDefaults(topCell)
-            if (seeThrowCondition(topCell) && visionRange > count) {
-                getTopText(tile, count+1)
+        } else if (nextCell.isUnpassable == true) {
+            text += getUnpassableDefaults(nextCell)
+            if (seeThrowCondition(nextCell) && visionRange > range) {
+                text += " " + getSideText(tile, range+1, function)
             }
         } else {
-            text += topCell.nextTileCustomDescription ?: " -not filled- "
-            if (seeThrowCondition(topCell) && visionRange > count) {
-                getTopText(tile, count+1)
+            text += getRangeDependedText(nextCell, range) ?: " -not filled- "
+            if (seeThrowCondition(nextCell) && visionRange > range) {
+                text += " " + getSideText(tile, range+1, function)
             }
         }
         return text
     }
 
-    protected open fun seeThrowCondition(topCell: MapTile) = topCell.canSeeThrow != false
-
-    override fun getTopText(tile: MapTile, count: Int): CharSequence {
-        return getSideText(tile, count, { map.getTopCell(tile.posX, tile.posY, count) })
+    override fun getRangeDependedText(nextCell: MapTile, range: Int): String? {
+        if (range == 1) {
+            return nextCell.nextTileCustomDescription
+        }   else {
+            return nextCell.customFarBehindText
+        }
     }
 
-    override fun getRightText(tile: MapTile, count: Int): CharSequence {
-        return getSideText(tile, count, { map.getRightCell(tile.posX, tile.posY, count) })
+    protected open fun seeThrowCondition(nextCell: MapTile) = nextCell.canSeeThrow != false
+
+    override fun getTopText(tile: MapTile): CharSequence {
+        var text = map.defaultTopMovingTexts
+        text+=getSideText(tile, 1, { range -> map.getTopCell(tile.posX, tile.posY, range) })
+        return text
     }
 
-    override fun getLeftText(tile: MapTile, count: Int): CharSequence {
-        return getSideText(tile, count, { map.getLeftCell(tile.posX, tile.posY, count) })
+    override fun getRightText(tile: MapTile): CharSequence {
+        var text = map.defaultRightMovingTexts
+        text += getSideText(tile, 1, { range -> map.getRightCell(tile.posX, tile.posY, range) })
+        return text
     }
 
-    override fun getBottomText(tile: MapTile, count: Int): CharSequence {
-        return getSideText(tile, count, { map.getBottomCell(tile.posX, tile.posY, count) })
+    override fun getLeftText(tile: MapTile): CharSequence {
+        var text = map.defaultLeftMovingTexts
+        text += getSideText(tile, 1, { range -> map.getLeftCell(tile.posX, tile.posY, range) })
+        return text
+    }
+
+    override fun getBottomText(tile: MapTile): CharSequence {
+        var text = map.defaultBottomMovingTexts
+        text += getSideText(tile, 1, { range -> map.getBottomCell(tile.posX, tile.posY, range) })
+        return text
     }
 
     override fun getCurrentTileText(tile: MapTile): CharSequence {

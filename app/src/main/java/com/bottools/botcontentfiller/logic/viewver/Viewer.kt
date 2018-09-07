@@ -4,9 +4,10 @@ import com.bottools.botcontentfiller.model.MapTile
 import com.bottools.botcontentfiller.model.WorldMap
 
 abstract class Viewer(val map: WorldMap) {
-    abstract fun getTopText(tile: MapTile, count: Int = 1): CharSequence
-    abstract fun getLeftText(tile: MapTile, count: Int = 1): CharSequence
-    abstract fun getRightText(tile: MapTile, count: Int = 1): CharSequence
-    abstract fun getBottomText(tile: MapTile, count: Int = 1): CharSequence
+    abstract fun getTopText(tile: MapTile): CharSequence
+    abstract fun getLeftText(tile: MapTile): CharSequence
+    abstract fun getRightText(tile: MapTile): CharSequence
+    abstract fun getBottomText(tile: MapTile): CharSequence
     abstract fun getCurrentTileText(tile: MapTile): CharSequence
+    abstract fun getRangeDependedText(nextCell: MapTile, range: Int): String?
 }

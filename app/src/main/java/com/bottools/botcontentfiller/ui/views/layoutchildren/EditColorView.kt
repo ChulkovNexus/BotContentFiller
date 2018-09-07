@@ -21,7 +21,14 @@ class EditColorView @JvmOverloads constructor (var color: Int?, var descr: Strin
         val innerContainer = view.findViewById<Spinner>(R.id.color_selector)
         descriptionTv.text = descr
         val colorsAdapter = ColorsAdapter(context)
+        val intArray = context.resources.getIntArray(R.array.colors_arrays).toList()
+        colorsAdapter.addAll(intArray)
         innerContainer.adapter = colorsAdapter
+
+        val indexOfFirst = intArray.indexOfFirst { it == color }
+        if (indexOfFirst != -1) {
+            innerContainer.setSelection(indexOfFirst)
+        }
         innerContainer.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -36,21 +43,18 @@ class EditColorView @JvmOverloads constructor (var color: Int?, var descr: Strin
 
     class ColorsAdapter(context: Context) : ArrayAdapter<Int>(context, android.R.layout.simple_spinner_item) {
 
-        init {
-            val intArray = context.resources.getIntArray(R.array.colors_arrays).toList()
-            addAll(intArray)
-        }
-
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view =  super.getDropDownView(position, convertView, parent)
             view.background = ColorDrawable(getItem(position))
+            (view as TextView).text = ""
             return view
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view =  super.getView(position, convertView, parent)
             view.background = ColorDrawable(getItem(position))
-            return super.getView(position, convertView, parent)
+            (view as TextView).text = ""
+            return view
         }
     }
 }
