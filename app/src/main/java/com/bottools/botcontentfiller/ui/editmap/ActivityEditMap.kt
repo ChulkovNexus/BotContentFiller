@@ -34,7 +34,7 @@ class ActivityEditMap : AppCompatActivity() {
         if (loadMap == null) {
             map = WorldMap()
             if (map!!.tiles.isEmpty()) {
-                map!!.initMap(20, 20)
+                map!!.initMap(30, 20)
             }
             DatabaseManager.saveMap(map!!)
         } else {

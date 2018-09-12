@@ -21,6 +21,7 @@ class EditSingleStringView @JvmOverloads constructor (var str : String?, var des
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 str = s.toString()
+                changeListener?.onChange()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -34,7 +34,7 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
         } else {
             text += getRangeDependedText(nextCell, range) ?: " -not filled- "
             if (seeThrowCondition(nextCell) && visionRange > range) {
-                text += " " + map.defaultBehindsTexts.getRandItem() + " " + getSideText(tile, range+1, function)
+                text += ", " + map.defaultBehindsTexts.getRandItem() + " " + getSideText(tile, range+1, function)
             }
         }
         return text

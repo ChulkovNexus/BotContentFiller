@@ -54,8 +54,8 @@ class PositionIndicator : FrameLayout {
         if (map == null)
             return
 
-        val xLinesCount = map!!.tiles.size
-        val yLinesCount = map!!.tiles[0].size
+        val xLinesCount = map!!.tiles[0].size
+        val yLinesCount = map!!.tiles.size
 
         val xBlockSize = measuredWidth.toFloat() / xLinesCount
         val yBlockSize = measuredHeight.toFloat() / yLinesCount
@@ -75,6 +75,10 @@ class PositionIndicator : FrameLayout {
                 } else if (isBiomFilled(i, j)) {
                     mFloorPaint!!.color = Color.MAGENTA
                     canvas?.drawRect(xBlockSize * j, yBlockSize * i, xBlockSize * (j + 1), yBlockSize * (i + 1), mFloorPaint)
+                }
+                if (map!!.tiles[i][j].editedAfterBiomeSetted) {
+                    mFloorPaint!!.color = Color.MAGENTA
+                    canvas?.drawRect(xBlockSize * j, yBlockSize * i, xBlockSize * (j + 1), yBlockSize * (i + 1) - (yBlockSize/2), mFloorPaint)
                 }
                 if (map!!.tiles[i][j].isUnpassable == true) {
                     mFloorPaint!!.color = Color.BLACK

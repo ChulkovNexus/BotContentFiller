@@ -27,6 +27,7 @@ class EditPercentView @JvmOverloads constructor (var percent: Float?, var descr:
             override fun afterTextChanged(s: Editable?) {
                 try {
                     percent = s.toString().toInt() / 100f
+                    changeListener?.onChange()
                 } catch (e: NumberFormatException) {
                     e.printStackTrace()
                 }

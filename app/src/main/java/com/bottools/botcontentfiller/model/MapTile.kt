@@ -30,10 +30,13 @@ open class MapTile : RealmObject, Serializable {
     var isUnpassable : Boolean? = false
     var nextTileCustomDescription : String? = null
     var customFarBehindText : String? = null
+    var editedAfterBiomeSetted = false
 
     fun fillFromBiome(selectedBiome: Biome) {
         biomeId = selectedBiome.id
-        val percentage = Random().nextInt(100)
+        val maxBy = selectedBiome.tiles.maxBy { it.probability ?:0f}
+        val intPercentage = ((maxBy?.probability ?: 0.01f) * 100f).toInt()
+        val percentage = Random().nextInt(intPercentage + 1)
         val randTile = getRandomTile(selectedBiome.tiles, percentage)
         randTile?.let {
             canSeeThrow = randTile.canSeeThrow
@@ -41,13 +44,17 @@ open class MapTile : RealmObject, Serializable {
             customFarBehindText = randTile.customFarBehindText
             thisTileCustomDescription = randTile.thisTileCustomDescription
             nextTileCustomDescription  = randTile.nextTileCustomDescription
+            editedAfterBiomeSetted = false
         }
     }
 
     private fun getRandomTile(tiles: RealmList<BiomeTile>, percentage: Int): BiomeTile? {
         val randItem = tiles.getRandItem()
-        val probability = randItem?.probability ?: 0f
-        if ((probability * 100f).toInt() < percentage ) {
+        var probability = randItem?.probability ?: 10f
+        if (probability == 0f) {
+            probability = 100f
+        }
+        if (percentage <= (probability * 100f).toInt()) {
             return randItem
         } else {
             return getRandomTile(tiles, percentage)

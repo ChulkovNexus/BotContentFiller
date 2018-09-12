@@ -115,14 +115,16 @@ class EditMapTileFragment : Fragment(), AbstractChild.ChangeListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        tile.thisTileCustomDescription = element.str
-        tile.nextTileCustomDescription = element1.str
-        tile.customFarBehindText = element2.str
-        tile.isUnpassable = element3.boolean
-        tile.canSeeThrow = element4.boolean
+        with(tile) {
+            tile.thisTileCustomDescription = element.str
+            tile.nextTileCustomDescription = element1.str
+            tile.customFarBehindText = element2.str
+            tile.isUnpassable = element3.boolean
+            tile.canSeeThrow = element4.boolean
+        }
     }
 
     override fun onChange() {
-        tile.biomeId = 0
+        tile.editedAfterBiomeSetted = true
     }
 }

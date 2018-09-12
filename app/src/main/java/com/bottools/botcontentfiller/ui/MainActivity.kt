@@ -23,7 +23,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.*
 import io.realm.SyncConfiguration
-
+import io.realm.PermissionManager
+import io.realm.ObjectServerError
+import io.realm.RealmResults
+import io.realm.RealmChangeListener
+import io.realm.permissions.Permission
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,9 +57,10 @@ class MainActivity : AppCompatActivity() {
         showProgress(true)
         val credentials = SyncCredentials.nickname("valera", false)
         SyncUser.logInAsync(credentials, AUTH_URL, object : SyncUser.Callback<SyncUser> {
-            override fun onSuccess(result: SyncUser) {
+            override fun onSuccess(user: SyncUser) {
                 showProgress(false)
-                Realm.setDefaultConfiguration(result.defaultConfiguration)
+                val createConfiguration = user.createConfiguration("/valerarealm").build()
+                Realm.setDefaultConfiguration(createConfiguration)
             }
 
             override fun onError(error: ObjectServerError?) {
@@ -64,6 +69,17 @@ class MainActivity : AppCompatActivity() {
                 error?.printStackTrace()
             }
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val current = SyncUser.current()
+        if (current!= null) {
+            Thread({
+                val syncSession = current.allSessions().firstOrNull()
+                syncSession?.uploadAllLocalChanges()
+            }).start()
+        }
     }
 
     private fun showProgress(show: Boolean) {

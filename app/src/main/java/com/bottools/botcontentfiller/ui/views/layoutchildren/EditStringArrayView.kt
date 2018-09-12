@@ -55,6 +55,7 @@ class EditStringArrayView  : AbstractChild{
                 val indexOfChild = container.indexOfChild(view)
                 if (indexOfChild!= -1) {
                     list[indexOfChild] = s.toString()
+                    changeListener?.onChange()
                 }
             }
 

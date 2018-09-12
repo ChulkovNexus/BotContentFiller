@@ -21,6 +21,7 @@ class EditBooleanView @JvmOverloads constructor (var boolean: Boolean?, var desc
         innerContainer.isChecked = boolean!!
         innerContainer.setOnCheckedChangeListener { v, isChecked ->
             boolean = isChecked
+            changeListener?.onChange()
         }
         this.addView(view)
     }

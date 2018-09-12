@@ -36,6 +36,7 @@ class EditColorView @JvmOverloads constructor (var color: Int?, var descr: Strin
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 color = colorsAdapter.getItem(position)
+                changeListener?.onChange()
             }
         }
         this.addView(view)
