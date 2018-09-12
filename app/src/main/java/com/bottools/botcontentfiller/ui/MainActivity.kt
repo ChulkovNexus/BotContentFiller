@@ -55,12 +55,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun connectToRealmCloud() {
         showProgress(true)
-        val credentials = SyncCredentials.nickname("valera", false)
+        val credentials = SyncCredentials.nickname("valera77", true)
         SyncUser.logInAsync(credentials, AUTH_URL, object : SyncUser.Callback<SyncUser> {
             override fun onSuccess(user: SyncUser) {
                 showProgress(false)
-                val createConfiguration = user.createConfiguration("/valerarealm").build()
-                Realm.setDefaultConfiguration(createConfiguration)
+                val build = user.createConfiguration("/default").fullSynchronization().build()
+                Realm.setDefaultConfiguration(build)
             }
 
             override fun onError(error: ObjectServerError?) {
@@ -69,17 +69,6 @@ class MainActivity : AppCompatActivity() {
                 error?.printStackTrace()
             }
         })
-    }
-
-    override fun onPause() {
-        super.onPause()
-        val current = SyncUser.current()
-        if (current!= null) {
-            Thread({
-                val syncSession = current.allSessions().firstOrNull()
-                syncSession?.uploadAllLocalChanges()
-            }).start()
-        }
     }
 
     private fun showProgress(show: Boolean) {
