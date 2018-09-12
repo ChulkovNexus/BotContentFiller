@@ -39,14 +39,14 @@ object DatabaseManager {
     fun saveBiome(biome: Biome) {
         val realm = Realm.getDefaultInstance()
         realm.executeTransaction {
-            it.insertOrUpdate(biome)
+            it.copyToRealmOrUpdate(biome)
         }
     }
 
     fun saveBiomeTile(biomeTile: BiomeTile) {
         val realm = Realm.getDefaultInstance()
         realm.executeTransaction {
-            it.insertOrUpdate(biomeTile)
+            it.copyToRealmOrUpdate(biomeTile)
         }
     }
 

@@ -22,7 +22,7 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
     }
 
     private fun getSideText(tile: MapTile, range: Int, function: (Int) -> MapTile?) : CharSequence {
-        var text = ""
+        var text = " "
         val nextCell = function.invoke(range)
         if (nextCell == null) {
             text += getUnpassableDefaults(tile)
@@ -34,7 +34,7 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
         } else {
             text += getRangeDependedText(nextCell, range) ?: " -not filled- "
             if (seeThrowCondition(nextCell) && visionRange > range) {
-                text += " " + getSideText(tile, range+1, function)
+                text += " " + map.defaultBehindsTexts.getRandItem() + " " + getSideText(tile, range+1, function)
             }
         }
         return text
@@ -50,31 +50,31 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
 
     protected open fun seeThrowCondition(nextCell: MapTile) = nextCell.canSeeThrow != false
 
-    override fun getTopText(tile: MapTile): CharSequence {
-        var text = map.defaultTopMovingTexts
-        text+=getSideText(tile, 1, { range -> map.getTopCell(tile.posX, tile.posY, range) })
+    override fun getTopText(tile: MapTile): String {
+        var text = map.defaultTopMovingTexts.getRandItem() ?: ""
+        text+= getSideText(tile, 1, { range -> map.getTopCell(tile.posX, tile.posY, range) })
         return text
     }
 
-    override fun getRightText(tile: MapTile): CharSequence {
-        var text = map.defaultRightMovingTexts
+    override fun getRightText(tile: MapTile): String {
+        var text = map.defaultRightMovingTexts.getRandItem() ?: ""
         text += getSideText(tile, 1, { range -> map.getRightCell(tile.posX, tile.posY, range) })
         return text
     }
 
-    override fun getLeftText(tile: MapTile): CharSequence {
-        var text = map.defaultLeftMovingTexts
+    override fun getLeftText(tile: MapTile): String {
+        var text = map.defaultLeftMovingTexts.getRandItem() ?: ""
         text += getSideText(tile, 1, { range -> map.getLeftCell(tile.posX, tile.posY, range) })
         return text
     }
 
-    override fun getBottomText(tile: MapTile): CharSequence {
-        var text = map.defaultBottomMovingTexts
+    override fun getBottomText(tile: MapTile): String {
+        var text = map.defaultBottomMovingTexts.getRandItem() ?: ""
         text += getSideText(tile, 1, { range -> map.getBottomCell(tile.posX, tile.posY, range) })
         return text
     }
 
-    override fun getCurrentTileText(tile: MapTile): CharSequence {
+    override fun getCurrentTileText(tile: MapTile): String {
         return tile.thisTileCustomDescription ?: " -not filled- "
     }
 

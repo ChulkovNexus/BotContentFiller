@@ -7,8 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
@@ -16,15 +18,22 @@ import com.bottools.botcontentfiller.model.ExportObject
 import com.bottools.botcontentfiller.ui.biomes.ActivityEditBiomes
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
 import com.google.gson.Gson
+import io.realm.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.*
+import io.realm.SyncConfiguration
+
+
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val EXP_REQ = 0x001
         private const val IMP_REQ = 0x002
+        private val INSTANCE_ADDRESS = "handmadebotfillercloud.de1a.cloud.realm.io"
+        val AUTH_URL = "https://$INSTANCE_ADDRESS/auth"
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +46,29 @@ class MainActivity : AppCompatActivity() {
         editBiomes.setOnClickListener {
             startActivity(Intent(this, ActivityEditBiomes::class.java))
         }
+        connectToRealmCloud()
+    }
+
+    private fun connectToRealmCloud() {
+        showProgress(true)
+        val credentials = SyncCredentials.nickname("valera", false)
+        SyncUser.logInAsync(credentials, AUTH_URL, object : SyncUser.Callback<SyncUser> {
+            override fun onSuccess(result: SyncUser) {
+                showProgress(false)
+                Realm.setDefaultConfiguration(result.defaultConfiguration)
+            }
+
+            override fun onError(error: ObjectServerError?) {
+                showProgress(false)
+                Toast.makeText(baseContext, "Uh oh something went wrong! (check your logcat please)", Toast.LENGTH_LONG).show()
+                error?.printStackTrace()
+            }
+        })
+    }
+
+    private fun showProgress(show: Boolean) {
+        progress.visibility = if (show) View.VISIBLE else View.GONE
+        body.visibility = if (!show) View.VISIBLE else View.GONE
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

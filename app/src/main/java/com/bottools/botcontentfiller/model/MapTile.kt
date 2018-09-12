@@ -5,6 +5,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.io.Serializable
+import java.util.*
 
 open class MapTile : RealmObject, Serializable {
 
@@ -32,13 +33,24 @@ open class MapTile : RealmObject, Serializable {
 
     fun fillFromBiome(selectedBiome: Biome) {
         biomeId = selectedBiome.id
-        val randTile = selectedBiome.tiles.getRandItem()
+        val percentage = Random().nextInt(100)
+        val randTile = getRandomTile(selectedBiome.tiles, percentage)
         randTile?.let {
             canSeeThrow = randTile.canSeeThrow
             isUnpassable = randTile.isUnpassable
             customFarBehindText = randTile.customFarBehindText
             thisTileCustomDescription = randTile.thisTileCustomDescription
             nextTileCustomDescription  = randTile.nextTileCustomDescription
+        }
+    }
+
+    private fun getRandomTile(tiles: RealmList<BiomeTile>, percentage: Int): BiomeTile? {
+        val randItem = tiles.getRandItem()
+        val probability = randItem?.probability ?: 0f
+        if ((probability * 100f).toInt() < percentage ) {
+            return randItem
+        } else {
+            return getRandomTile(tiles, percentage)
         }
     }
 }

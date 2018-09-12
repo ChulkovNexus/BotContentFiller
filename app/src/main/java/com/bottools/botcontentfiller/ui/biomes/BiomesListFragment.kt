@@ -28,8 +28,12 @@ class BiomesListFragment : ListFragment() {
         activity?.setTitle(R.string.biomes_list)
         biomes = DatabaseManager.getBiomes()
         adapter = BiomesAdapter(activity!!, {
-            listener?.biomeChoosed(it)
-            activity?.onBackPressed()
+            if (listener== null) {
+                openBiomeTilesListFragment(it)
+            } else {
+                listener!!.biomeChoosed(it)
+                activity?.onBackPressed()
+            }
         }, {
             openBiomeTilesListFragment(it)
         }, {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.bottools.botcontentfiller.model.Biome
@@ -65,20 +66,25 @@ class PositionIndicator : FrameLayout {
         for (i in 0..yLinesCount) {
             canvas?.drawLine(0f, yBlockSize * i, measuredWidth.toFloat(), yBlockSize * i, linePaint)
         }
-        mFloorPaint!!.color = Color.RED
-        canvas?.drawRect(xBlockSize * posX, yBlockSize * posY, xBlockSize * (posX + 1), yBlockSize * (posY + 1), mFloorPaint)
         map!!.tiles.forEachIndexed { i, it ->
             map!!.tiles[i].forEachIndexed { j, it ->
                 val biome = biomes.firstOrNull { it.id == map!!.tiles[i][j].biomeId }
                 if (biome != null) {
                     mFloorPaint!!.color = biome.color
-                    canvas?.drawRect(xBlockSize * i, yBlockSize * j, xBlockSize * (i + 1), yBlockSize * (j + 1), mFloorPaint)
+                    canvas?.drawRect(xBlockSize * j, yBlockSize * i, xBlockSize * (j + 1), yBlockSize * (i + 1), mFloorPaint)
+                } else if (isBiomFilled(i, j)) {
+                    mFloorPaint!!.color = Color.MAGENTA
+                    canvas?.drawRect(xBlockSize * j, yBlockSize * i, xBlockSize * (j + 1), yBlockSize * (i + 1), mFloorPaint)
                 }
                 if (map!!.tiles[i][j].isUnpassable == true) {
                     mFloorPaint!!.color = Color.BLACK
-                    canvas?.drawCircle((xBlockSize * i) + (xBlockSize / 2), (yBlockSize * j) + (yBlockSize / 2), Math.min(yBlockSize, xBlockSize) / 2, mFloorPaint)
+                    canvas?.drawCircle((xBlockSize * j) + (xBlockSize / 2), (yBlockSize * i) + (yBlockSize / 2), Math.min(yBlockSize, xBlockSize) / 2, mFloorPaint)
                 }
             }
         }
+        mFloorPaint!!.color = Color.RED
+        canvas?.drawRect(xBlockSize * posX, yBlockSize * posY, xBlockSize * (posX + 1), yBlockSize * (posY + 1), mFloorPaint)
     }
+
+    private fun isBiomFilled(i: Int, j: Int) = !TextUtils.isEmpty(map!!.tiles[i][j].thisTileCustomDescription) && !TextUtils.isEmpty(map!!.tiles[i][j].nextTileCustomDescription) && !TextUtils.isEmpty(map!!.tiles[i][j].customFarBehindText)
 }

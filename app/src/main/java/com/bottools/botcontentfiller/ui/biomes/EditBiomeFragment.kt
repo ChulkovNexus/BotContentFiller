@@ -31,10 +31,6 @@ class EditBiomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        val biomeId = arguments?.getInt(BIOME_ID)
-        if (biomeId != null) {
-            biome = DatabaseManager.getBiome(biomeId)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,7 +48,10 @@ class EditBiomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val context = context!!
-
+        val biomeId = arguments?.getInt(BIOME_ID)
+        if (biomeId != null) {
+            biome = DatabaseManager.getBiome(biomeId)
+        }
         biome?.let { biome ->
             val views = ArrayList<AbstractChild>()
             views.add(ButtonChild(context.getString(R.string.edit_tiles), {

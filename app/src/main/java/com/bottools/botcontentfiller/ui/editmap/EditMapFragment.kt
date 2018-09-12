@@ -13,6 +13,7 @@ import com.bottools.botcontentfiller.logic.viewver.EarthTypeViewer
 import com.bottools.botcontentfiller.logic.viewver.Viewer
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Biome
+import com.bottools.botcontentfiller.utils.getRandItem
 import kotlinx.android.synthetic.main.fragment_edit_map.*
 
 class EditMapFragment : Fragment() {
@@ -150,7 +151,7 @@ class EditMapFragment : Fragment() {
     private fun updateTexts() {
         val currentTile = map!!.getTile(currentPositionX, currentPositionY)
         custom_text.text = viewer.getCurrentTileText(currentTile)
-        way_text.text = "${map!!.defaultLookingForWayPrefix} ${viewer.getTopText(currentTile)}, ${viewer.getRightText(currentTile)}," +
+        way_text.text = "${map!!.defaultLookingForWayPrefix.getRandItem()} ${viewer.getTopText(currentTile)}, ${viewer.getRightText(currentTile)}," +
                 " ${viewer.getBottomText(currentTile)}, ${viewer.getLeftText(currentTile)}"
     }
 

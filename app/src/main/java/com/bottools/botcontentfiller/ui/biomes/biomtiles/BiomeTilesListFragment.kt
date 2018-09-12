@@ -33,15 +33,15 @@ class BiomeTilesListFragment : ListFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        val biomeId = arguments?.getInt(BIOME_ID)
-        if (biomeId != null) {
-            biome = DatabaseManager.getBiome(biomeId)
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.setTitle(R.string.biome_tiles_list)
+        val biomeId = arguments?.getInt(BIOME_ID)
+        if (biomeId != null) {
+            biome = DatabaseManager.getBiome(biomeId)
+        }
         biome?.let { biome ->
             adapter = BiomeTilesAdapter(activity!!, { biomeTile ->
                 openBiomTileFragment(biomeTile)
@@ -89,6 +89,13 @@ class BiomeTilesListFragment : ListFragment() {
             DatabaseManager.saveBiome(it)
             openBiomTileFragment(biomeTile)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+//        biome?.let { biome ->
+//            DatabaseManager.saveBiome(biome)
+//        }
     }
 
     private fun openBiomTileFragment(biomeTile: BiomeTile) {

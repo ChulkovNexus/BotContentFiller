@@ -28,13 +28,13 @@ open class WorldMap : RealmObject() {
 
     @PrimaryKey
     var id = 0x0001 // single instance in base
-    var defaultLeftMovingTexts = String()
-    var defaultRightMovingTexts = String()
-    var defaultLookingForWayPrefix = String()
-    var defaultTopMovingTexts = String()
-    var defaultBottomMovingTexts = String()
-    var defaultBehindsTexts = String()
-    var defaultUnpassableText = String()
+    var defaultLeftMovingTexts = RealmList<String>()
+    var defaultRightMovingTexts = RealmList<String>()
+    var defaultLookingForWayPrefix = RealmList<String>()
+    var defaultTopMovingTexts = RealmList<String>()
+    var defaultBottomMovingTexts = RealmList<String>()
+    var defaultBehindsTexts = RealmList<String>()
+    var defaultUnpassableText = RealmList<String>()
 
     @Ignore
     var tiles = ArrayList<ArrayList<MapTile>>()

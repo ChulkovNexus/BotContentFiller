@@ -36,15 +36,7 @@ class EditBiomeTileFragment : Fragment() {
     private lateinit var isUnpassableView : EditBooleanView
     private lateinit var canSeeThrowView : EditBooleanView
     private lateinit var probabilityView : EditPercentView
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val tileId = arguments?.getInt(TILE_ID)
-        biomeTile = DatabaseManager.getBiomeTile(tileId)
-    }
-
+    
     override fun onResume() {
         super.onResume()
         activity?.setTitle(R.string.biome_tile_editing)
@@ -58,6 +50,8 @@ class EditBiomeTileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val context = context!!
+        val tileId = arguments?.getInt(TILE_ID)
+        biomeTile = DatabaseManager.getBiomeTile(tileId)
 
         biomeTile?.let { biomeTile ->
             val views = ArrayList<AbstractChild>()
