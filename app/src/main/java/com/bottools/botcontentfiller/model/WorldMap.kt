@@ -31,6 +31,7 @@ open class WorldMap : RealmObject() {
     var defaultLeftMovingTexts = RealmList<String>()
     var defaultRightMovingTexts = RealmList<String>()
     var defaultLookingForWayPrefix = RealmList<String>()
+    var beginningPhrases = RealmList<String>()
     var defaultTopMovingTexts = RealmList<String>()
     var defaultBottomMovingTexts = RealmList<String>()
     var defaultBehindsTexts = RealmList<String>()

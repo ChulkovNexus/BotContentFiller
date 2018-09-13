@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.biomes
+package com.bottools.botcontentfiller.ui.events
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
@@ -7,16 +7,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
-import com.bottools.botcontentfiller.model.Biome
-import com.bottools.botcontentfiller.ui.biomes.adapters.BiomesAdapter
+import com.bottools.botcontentfiller.model.Event
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
-import com.bottools.botcontentfiller.utils.random
 
-class BiomesListFragment : ListFragment() {
+class EventsListFragment: ListFragment() {
 
-    var listener: BiomeChoosedListener? = null
-    private var biomes = ArrayList<Biome>()
-    private lateinit var adapter: BiomesAdapter
+    private var events = ArrayList<Event>()
+    private lateinit var adapter: EventsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +23,13 @@ class BiomesListFragment : ListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.setTitle(R.string.biomes_list)
-        biomes = DatabaseManager.getList()
-        adapter = BiomesAdapter(activity!!, {
-            if (listener== null) {
-                openBiomeTilesListFragment(it)
-            } else {
-                listener!!.biomeChoosed(it)
-                activity?.onBackPressed()
-            }
+        events = DatabaseManager.getList()
+        adapter = EventsAdapter(activity!!, {
+            openEventTilesListFragment(it)
         }, {
-            openBiomeTilesListFragment(it)
-        }, {
-            removeBiome(it)
+            removeEvent(it)
         })
-        adapter.addAll(biomes)
+        adapter.addAll(events)
         listAdapter = adapter
     }
 
@@ -54,36 +44,32 @@ class BiomesListFragment : ListFragment() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.plus -> {
-                addBiome()
+                addEvent()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun addBiome() {
-        val biome = Biome()
-        biome.id = (0..Int.MAX_VALUE).random()
-        DatabaseManager.save(biome)
-        openBiomeTilesListFragment(biome)
+    private fun addEvent() {
+        val event = Event()
+        event.initEventId()
+        DatabaseManager.save(event)
+        openEventTilesListFragment(event)
     }
 
-    private fun removeBiome(biome: Biome) {
-        biomes.remove(biome)
-        adapter.remove(biome)
+    private fun removeEvent(event: Event) {
+        events.remove(event)
+        adapter.remove(event)
         adapter.notifyDataSetChanged()
-        DatabaseManager.remove<Biome>(biome.id)
+        DatabaseManager.remove<Event>(event.id)
     }
 
-    private fun openBiomeTilesListFragment(biome: Biome) {
-        val fragment = EditBiomeFragment.createInstance(biome.id)
+    private fun openEventTilesListFragment(event: Event) {
+        val fragment = EditEventFragment.createInstance(event.id)
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
         transaction.addToBackStack("")
         transaction.replace(com.bottools.botcontentfiller.R.id.fragment_container, fragment, ActivityEditMap.FRAGMENT_TAG).commit()
-    }
-
-    interface BiomeChoosedListener {
-        fun biomeChoosed(biome: Biome)
     }
 }

@@ -40,7 +40,7 @@ class BiomeTilesListFragment : ListFragment() {
         activity?.setTitle(R.string.biome_tiles_list)
         val biomeId = arguments?.getInt(BIOME_ID)
         if (biomeId != null) {
-            biome = DatabaseManager.getBiome(biomeId)
+            biome = DatabaseManager.getById(biomeId)
         }
         biome?.let { biome ->
             adapter = BiomeTilesAdapter(activity!!, { biomeTile ->
@@ -57,7 +57,7 @@ class BiomeTilesListFragment : ListFragment() {
         biome?.let { biome ->
             biome.tiles.remove(biomeTile)
             adapter.remove(biomeTile)
-            DatabaseManager.removeBiomeTile(biomeTile)
+            DatabaseManager.remove<BiomeTile>(biomeTile.id)
             adapter.notifyDataSetChanged()
         }
     }
@@ -85,8 +85,8 @@ class BiomeTilesListFragment : ListFragment() {
             val biomeTile = BiomeTile()
             biomeTile.id = (0..Int.MAX_VALUE).random()
             it.tiles.add(biomeTile)
-            DatabaseManager.saveBiomeTile(biomeTile)
-            DatabaseManager.saveBiome(it)
+            DatabaseManager.save(biomeTile)
+            DatabaseManager.save(it)
             openBiomTileFragment(biomeTile)
         }
     }

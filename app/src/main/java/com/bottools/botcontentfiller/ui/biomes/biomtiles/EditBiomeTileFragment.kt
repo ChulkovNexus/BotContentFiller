@@ -51,7 +51,9 @@ class EditBiomeTileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val context = context!!
         val tileId = arguments?.getInt(TILE_ID)
-        biomeTile = DatabaseManager.getBiomeTile(tileId)
+        if (tileId != null) {
+            biomeTile = DatabaseManager.getById(tileId)
+        }
 
         biomeTile?.let { biomeTile ->
             val views = ArrayList<AbstractChild>()
@@ -86,7 +88,7 @@ class EditBiomeTileFragment : Fragment() {
                 canSeeThrow = canSeeThrowView.boolean
                 probability = probabilityView.percent
             }
-            DatabaseManager.saveBiomeTile(it)
+            DatabaseManager.save(it)
         }
     }
 }

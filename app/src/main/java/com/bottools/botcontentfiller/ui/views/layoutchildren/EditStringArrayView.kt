@@ -14,12 +14,7 @@ import android.widget.TextView
 import com.bottools.botcontentfiller.R
 import io.realm.RealmList
 
-class EditStringArrayView  : AbstractChild{
-
-//    @JvmOverloads
-//    constructor (strArray : ArrayList<String>, description: String, context: Context, attrs: AttributeSet? = null): super(context, attrs){
-//        fillLayout(this, strArray, description)
-//    }
+class EditStringArrayView  : AbstractChild {
 
     @JvmOverloads
     constructor (strArray : RealmList<String>, description: String, context: Context, attrs: AttributeSet? = null): super(context, attrs){

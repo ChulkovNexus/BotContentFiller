@@ -50,7 +50,7 @@ class EditBiomeFragment : Fragment() {
         val context = context!!
         val biomeId = arguments?.getInt(BIOME_ID)
         if (biomeId != null) {
-            biome = DatabaseManager.getBiome(biomeId)
+            biome = DatabaseManager.getById(biomeId)
         }
         biome?.let { biome ->
             val views = ArrayList<AbstractChild>()
@@ -73,7 +73,7 @@ class EditBiomeFragment : Fragment() {
         super.onDestroyView()
         biome!!.name = nameField.str!!
         biome!!.color = colorField.color!!
-        DatabaseManager.saveBiome(biome!!)
+        DatabaseManager.save(biome!!)
     }
 
     private fun openTilesFragment() {

@@ -35,7 +35,7 @@
     <string name="far_behind_bottom_text">описание того что далеко вниз</string>
     <string name="edit_tile">Заполнить вручную</string>
     <string name="events">Эвенты</string>
-    <string name="is_global">global</string>
+    <string name="is_global">Случится для всех на этой клетке</string>
     <string name="probability">Процент вероятности</string>
     <string name="unpassable">Непроходимая ячейка</string>
     <string name="edit_unknown_defaults">Edit unknown defaults</string>
@@ -61,4 +61,13 @@
     <string name="tile_filling">Заполнение тайла вручную</string>
     <string name="defaults_filling">Заполнение общих строк</string>
     <string name="biome_title">Биом:</string>
+    <string name="edit_beginning_phrases">Стартовые фразы</string>
+    <string name="edit_event_help">Текст возникающий когда случится это событие</string>
+    <string name="probability_from_attention_factor">Мультипликатор вероятности зависящий от внимательности</string>
+    <string name="probability_from_stealth_factor">Мультипликатор вероятности зависящий от скрытности</string>
+    <string name="stealth_factor">Мультипликатор скрытности</string>
+    <string name="edit_events">Events</string>
+    <string name="edit_work_types">Work types</string>
+    <string name="title_name">Название</string>
+    <string name="base_worktime">Базовое время работы</string>
 </resources>

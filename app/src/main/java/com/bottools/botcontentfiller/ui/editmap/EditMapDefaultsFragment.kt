@@ -40,6 +40,7 @@ class EditMapDefaultsFragment : Fragment() {
         val element4 = EditStringArrayView(localMap.defaultBehindsTexts, context.getString(R.string.edit_behind_defaults), context)
         val element5 = EditStringArrayView(localMap.defaultUnpassableText, context.getString(R.string.edit_unpassable_defaults), context)
         val element6 = EditStringArrayView(localMap.defaultLookingForWayPrefix, context.getString(R.string.edit_looking_for_way_defaults), context)
+        val element7 = EditStringArrayView(localMap.beginningPhrases, context.getString(R.string.edit_beginning_phrases), context)
         views.add(element)
         views.add(element1)
         views.add(element2)
@@ -47,6 +48,7 @@ class EditMapDefaultsFragment : Fragment() {
         views.add(element4)
         views.add(element5)
         views.add(element6)
+        views.add(element7)
         views.forEach {
             it.attachToView(container)
         }

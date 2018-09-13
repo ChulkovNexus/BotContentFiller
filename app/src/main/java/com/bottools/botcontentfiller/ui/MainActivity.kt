@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,17 +16,16 @@ import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.ExportObject
 import com.bottools.botcontentfiller.ui.biomes.ActivityEditBiomes
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
+import com.bottools.botcontentfiller.ui.events.ActivityEditEvents
+import com.bottools.botcontentfiller.ui.worktype.ActivityEditWorkTypes
 import com.google.gson.Gson
-import io.realm.*
+import io.realm.ObjectServerError
+import io.realm.Realm
+import io.realm.SyncCredentials
+import io.realm.SyncUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.*
-import io.realm.SyncConfiguration
-import io.realm.PermissionManager
-import io.realm.ObjectServerError
-import io.realm.RealmResults
-import io.realm.RealmChangeListener
-import io.realm.permissions.Permission
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,6 +47,12 @@ class MainActivity : AppCompatActivity() {
         }
         editBiomes.setOnClickListener {
             startActivity(Intent(this, ActivityEditBiomes::class.java))
+        }
+        editEvents.setOnClickListener {
+            startActivity(Intent(this, ActivityEditEvents::class.java))
+        }
+        editWorkTipes.setOnClickListener {
+            startActivity(Intent(this, ActivityEditWorkTypes::class.java))
         }
         connectToRealmCloud()
     }
@@ -146,7 +150,13 @@ class MainActivity : AppCompatActivity() {
                 DatabaseManager.saveMap(it)
             }
             exportObject.biomes?.forEach {
-                DatabaseManager.saveBiome(it)
+                DatabaseManager.save(it)
+            }
+            exportObject.events?.forEach {
+                DatabaseManager.save(it)
+            }
+            exportObject.workTypes?.forEach {
+                DatabaseManager.save(it)
             }
         }
     }
@@ -154,7 +164,9 @@ class MainActivity : AppCompatActivity() {
     private fun actionImport() {
         val exportObject = ExportObject()
         exportObject.map = DatabaseManager.loadMap()
-        exportObject.biomes = DatabaseManager.getBiomes()
+        exportObject.biomes = DatabaseManager.getList()
+        exportObject.events = DatabaseManager.getList()
+        exportObject.workTypes = DatabaseManager.getList()
         val gson = Gson()
         val file = File(Environment.getExternalStorageDirectory().path + File.separator + "TestMap.json")
         if (!file.exists()) {
