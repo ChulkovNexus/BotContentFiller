@@ -7,13 +7,16 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
+import com.bottools.botcontentfiller.model.Building
 import com.bottools.botcontentfiller.model.Event
+import com.bottools.botcontentfiller.ui.Buildings.BuildingsAdapter
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
+import com.bottools.botcontentfiller.utils.random
 
-class EventsListFragment: ListFragment() {
+class BuildingsListFragment: ListFragment() {
 
-    private var events = ArrayList<Event>()
-    private lateinit var adapter: EventsAdapter
+    private var buildings = ArrayList<Building>()
+    private lateinit var adapter: BuildingsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,14 +25,14 @@ class EventsListFragment: ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.setTitle(R.string.events_list)
-        events = DatabaseManager.getList()
-        adapter = EventsAdapter(activity!!, {
+        activity?.setTitle(R.string.buildings_list)
+        buildings = DatabaseManager.getList()
+        adapter = BuildingsAdapter(activity!!, {
             openEventTilesListFragment(it)
         }, {
             removeEvent(it)
         })
-        adapter.addAll(events)
+        adapter.addAll(buildings)
         listAdapter = adapter
     }
 
@@ -52,21 +55,21 @@ class EventsListFragment: ListFragment() {
     }
 
     private fun addEvent() {
-        val event = Event()
-        event.initEventId()
-        DatabaseManager.save(event)
-        openEventTilesListFragment(event)
+        val building = Building()
+        building.id = (0..Int.MAX_VALUE).random()
+        DatabaseManager.save(building)
+        openEventTilesListFragment(building)
     }
 
-    private fun removeEvent(event: Event) {
-        events.remove(event)
-        adapter.remove(event)
+    private fun removeEvent(building: Building) {
+        buildings.remove(building)
+        adapter.remove(building)
         adapter.notifyDataSetChanged()
-        DatabaseManager.remove<Event>(event.id)
+        DatabaseManager.remove<Event>(building.id)
     }
 
-    private fun openEventTilesListFragment(event: Event) {
-        val fragment = EditBuildingFragment.createInstance(event.id)
+    private fun openEventTilesListFragment(building: Building) {
+        val fragment = EditBuildingFragment.createInstance(building.id)
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
         transaction.addToBackStack("")

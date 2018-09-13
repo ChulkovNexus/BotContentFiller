@@ -70,4 +70,13 @@
     <string name="edit_work_types">Work types</string>
     <string name="title_name">Название</string>
     <string name="base_worktime">Базовое время работы</string>
+    <string name="buildings_list">Здания</string>
+    <string name="building_editing">Редактирование здания</string>
+    <string name="description">Описание</string>
+    <string name="energy_output">Производит энергии</string>
+    <string name="energy_requered">Требует энергии</string>
+    <string name="temperature_output">Производит тепла</string>
+    <string name="cant_work_without">Не может работать без</string>
+    <string name="events_list">список евентов</string>
+    <string name="event_editing">Редактирование евента</string>
 </resources>

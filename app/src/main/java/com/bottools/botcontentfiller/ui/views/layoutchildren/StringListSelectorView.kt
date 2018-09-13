@@ -11,7 +11,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.bottools.botcontentfiller.R
 
-class StringListSelectorView @JvmOverloads constructor (var list: ArrayList<String>, var selectedPosition: Int?, var descr: String, context: Context, attrs: AttributeSet? = null) : AbstractChild(context, attrs) {
+class StringListSelectorView @JvmOverloads constructor (var list: List<String>, var selectedPosition: Int?, var descr: String, context: Context, attrs: AttributeSet? = null) : AbstractChild(context, attrs) {
 
     init {
         if (selectedPosition == null) {

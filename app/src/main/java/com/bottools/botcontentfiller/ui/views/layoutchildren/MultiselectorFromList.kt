@@ -14,7 +14,7 @@ import io.realm.RealmList
 abstract class MultiselectorFromList<T> : AbstractChild {
 
     @JvmOverloads
-    constructor(possibleArray: RealmList<T>, checkedItems: RealmList<T>, description: String, fragmentManager: FragmentManager, context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+    constructor(possibleArray: List<T>, checkedItems: RealmList<T>, description: String, fragmentManager: FragmentManager, context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         val view = Button(context)
         view.text = description
         view.setOnClickListener {

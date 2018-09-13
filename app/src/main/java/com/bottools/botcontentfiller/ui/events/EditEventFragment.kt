@@ -16,8 +16,8 @@ class EditEventFragment : Fragment() {
     companion object {
         private const val EVENT_ID = "event_id"
 
-        fun createInstance(eventId: Int): EditEventFragment {
-            val fragment = EditEventFragment()
+        fun createInstance(eventId: Int): EditBuildingFragment {
+            val fragment = EditBuildingFragment()
             val bundle = Bundle()
             bundle.putInt(EVENT_ID, eventId)
             fragment.arguments = bundle
@@ -38,7 +38,7 @@ class EditEventFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.setTitle(R.string.biome_editing)
+        activity?.setTitle(R.string.event_editing)
     }
 
     private lateinit var element : EditPercentView

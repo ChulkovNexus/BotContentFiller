@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import com.bottools.botcontentfiller.R
 
 
-class ActivityEditEvents : AppCompatActivity() {
+class ActivityEditBuildings : AppCompatActivity() {
 
     companion object {
         const val FRAGMENT_TAG = "fragment_tag"

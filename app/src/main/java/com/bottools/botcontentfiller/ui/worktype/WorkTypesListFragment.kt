@@ -9,7 +9,6 @@ import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.WorkType
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
-import com.bottools.botcontentfiller.ui.events.EditEventFragment
 import com.bottools.botcontentfiller.utils.random
 
 class WorkTypesListFragment: ListFragment() {
