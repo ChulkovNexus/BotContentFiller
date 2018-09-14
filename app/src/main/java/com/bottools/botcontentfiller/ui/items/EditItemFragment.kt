@@ -144,8 +144,6 @@ class EditItemFragment : Fragment() {
         item?.armor = element13.percent!!
         item?.itemGroup = ItemGroup.values()[element9.selectedPosition!!]
         item?.wearType = WearType.values()[element10.selectedPosition!!]
-        item?.bodyPartCoverage?.clear()
-        item?.bodyPartCoverage?.addAll(element15.selectedItems)
         DatabaseManager.save(item!!)
     }
 

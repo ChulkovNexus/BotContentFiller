@@ -13,12 +13,10 @@ import io.realm.RealmList
 
 abstract class MultiselectorFromList<T> : AbstractChild {
 
-    val selectedItems = ArrayList<T>()
     @JvmOverloads
     constructor(possibleArray: List<T>, checkedItems: RealmList<T>, description: String, fragmentManager: FragmentManager, context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         val view = Button(context)
         view.text = description
-        selectedItems.addAll(checkedItems)
         view.setOnClickListener {
             val dialog = DialogSelection.newInstance(createItemsMap(), createCheckedMap())
             dialog.callback = { checkedIndexes: BooleanArray ->
@@ -28,8 +26,6 @@ abstract class MultiselectorFromList<T> : AbstractChild {
                         checkedItems.add(possibleArray[i])
                     }
                 }
-                selectedItems.clear()
-                selectedItems.addAll(checkedItems)
                 changeListener?.onChange()
             }
             dialog.show(fragmentManager, " ")

@@ -98,8 +98,6 @@ class EditBuildingFragment : Fragment() {
         building?.energyOutput = element2.value!!
         building?.energyRequered = element3.value!!
         building?.temperatureOtput = element4.value!!
-        building?.requiredBuildings?.clear()
-        building?.requiredBuildings?.addAll(element5.selectedItems)
         DatabaseManager.save(building!!)
     }
 
