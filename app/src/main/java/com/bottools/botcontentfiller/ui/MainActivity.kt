@@ -158,6 +158,9 @@ class MainActivity : AppCompatActivity() {
             exportObject.workTypes?.forEach {
                 DatabaseManager.save(it)
             }
+            exportObject.items?.forEach {
+                DatabaseManager.save(it)
+            }
         }
     }
 
@@ -167,6 +170,7 @@ class MainActivity : AppCompatActivity() {
         exportObject.biomes = DatabaseManager.getList()
         exportObject.events = DatabaseManager.getList()
         exportObject.workTypes = DatabaseManager.getList()
+        exportObject.items = DatabaseManager.getList()
         val gson = Gson()
         val file = File(Environment.getExternalStorageDirectory().path + File.separator + "TestMap.json")
         if (!file.exists()) {

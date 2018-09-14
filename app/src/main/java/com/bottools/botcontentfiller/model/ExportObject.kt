@@ -5,4 +5,5 @@ class ExportObject {
     var biomes: ArrayList<Biome>? = null
     var events: ArrayList<Event>? = null
     var workTypes: ArrayList<WorkType>? = null
+    var items: ArrayList<Item>? = null
 }

@@ -2,6 +2,9 @@ package com.bottools.botcontentfiller.model
 
 enum class ItemGroup {
     Wearable,
-    Weapon,
+    Ammo,
+    Food,
+    MeleeWeapon,
+    RangeWeapon,
     Resource
 }

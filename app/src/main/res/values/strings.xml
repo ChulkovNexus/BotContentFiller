@@ -79,4 +79,21 @@
     <string name="cant_work_without">Не может работать без</string>
     <string name="events_list">список евентов</string>
     <string name="event_editing">Редактирование евента</string>
+    <string name="item_editing">Редактирование предмета</string>
+    <string name="items_editing">Редактирование предметов</string>
+    <string name="effects">Описание эффектов</string>
+    <string name="weight">Вес</string>
+    <string name="accuracy">Точность</string>
+    <string name="damage">Базовый урон</string>
+    <string name="range">Дальность</string>
+    <string name="minDps">минимальный урон</string>
+    <string name="maxDps">макс урон</string>
+    <string name="temperature_modificator">Теплоудержание одеждой</string>
+    <string name="wear_type">тип одежды</string>
+    <string name="item_group">item group</string>
+    <string name="accuracy_range_factor">Зависимость точности от расстояния</string>
+    <string name="accuracy_damage_factor">зависимость урона от расстояни</string>
+    <string name="armor">броня</string>
+    <string name="max_helth">максимальное здоровье</string>
+    <string name="body_parts_coverage">Покрываемые части тела</string>
 </resources>

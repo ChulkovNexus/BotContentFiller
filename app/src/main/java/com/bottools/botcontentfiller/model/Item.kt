@@ -13,17 +13,16 @@ open class Item : RealmObject(), Serializable {
     var descr: String? = null
     var effects: String? = null
     var weight = 0
-    var itemGroup : ItemGroup? = null
     var accuracy = 0
-    var damage = 0
-    var accuracyRangeFactor = 0f
-    var accuracyRangeDamageFactor = 0f
     var range = 0
-    var isMelee = false
     var minDps = 0
     var maxDps = 0
-    var bodyPartDurabilityModificator = 0f
     var temperatureModificator = 0
+    var itemGroup : ItemGroup? = null
+    var wearType : WearType? = null
     var bodyPartCoverage = RealmList<BodyParts>()
-    var health = 0f // percent
+    var accuracyRangeFactor = 0f
+    var rangeDamageFactor = 0f
+    var armor = 0f
+    var maxHealth = 0 // percent
 }
