@@ -14,7 +14,7 @@ class ActivityEditEvents : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_map)
-        val fragment = BuildingsListFragment()
+        val fragment = EventsListFragment()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
         transaction.replace(R.id.fragment_container, fragment, FRAGMENT_TAG)

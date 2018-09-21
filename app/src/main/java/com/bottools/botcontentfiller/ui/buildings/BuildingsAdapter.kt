@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.Buildings
+package com.bottools.botcontentfiller.ui.buildings
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.model.Building
-import com.bottools.botcontentfiller.utils.getRandItem
 
 class BuildingsAdapter(context: Context, val editBuildingListener : (Building)-> Unit, val removeBuildingListener : (Building)-> Unit ) : ArrayAdapter<Building>(context, R.layout.adapter_layout_editing) {
 

@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.events
+package com.bottools.botcontentfiller.ui.buildings
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -56,6 +56,7 @@ class EditBuildingFragment : Fragment() {
             building = DatabaseManager.getById(buildingId)
         }
         building?.let { building ->
+            var requiredBuildings = DatabaseManager.getListByIds<Building>(building.requiredBuildingsIds.toTypedArray())
             val buildingsList = DatabaseManager.getList<Building>()
             buildingsList.filter { it.id != building.id }
 
@@ -65,11 +66,11 @@ class EditBuildingFragment : Fragment() {
             element2 = EditIntView(building.energyOutput, getString(R.string.energy_output), context)
             element3 = EditIntView(building.energyRequered, getString(R.string.energy_requered), context)
             element4 = EditIntView(building.temperatureOtput, getString(R.string.temperature_output), context)
-            element5 = object : MultiselectorFromList<Building>(buildingsList, building.requiredBuildings, getString(R.string.cant_work_without), activity!!.supportFragmentManager, context) {
+            element5 = object : MultiselectorFromList<Building>(buildingsList, requiredBuildings, getString(R.string.cant_work_without), activity!!.supportFragmentManager, context) {
                 override fun createCheckedMap(): BooleanArray {
                     val booleanArray = BooleanArray(buildingsList.size)
                     buildingsList.forEachIndexed { i, it ->
-                        booleanArray[i] = building.requiredBuildings.contains(it)
+                        booleanArray[i] = requiredBuildings.contains(it)
                     }
                     return booleanArray
                 }
@@ -78,7 +79,12 @@ class EditBuildingFragment : Fragment() {
                     return ArrayList(buildingsList.map { it.name })
                 }
             }
-
+            element5.changeListener = object : AbstractChild.ChangeListener {
+                override fun onChange() {
+                    building.requiredBuildingsIds.clear()
+                    building.requiredBuildingsIds.addAll(requiredBuildings.map { it.id })
+                }
+            }
             views.add(element)
             views.add(element1)
             views.add(element2)

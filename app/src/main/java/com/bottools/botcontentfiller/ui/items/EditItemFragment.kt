@@ -67,12 +67,12 @@ class EditItemFragment : Fragment() {
         }
         item?.let { item ->
 
-            var selectedItemGroupPosition = ItemGroup.values().indexOf(item.itemGroup)
-            if (selectedItemGroupPosition==-1) {
+            var selectedItemGroupPosition = ItemGroup.values().indexOf(item.getItemGroup())
+            if (selectedItemGroupPosition== -1) {
                 selectedItemGroupPosition = 0
             }
-            var selectedWearTypePosition = WearType.values().indexOf(item.wearType)
-            if (selectedWearTypePosition==-1) {
+            var selectedWearTypePosition = WearType.values().indexOf(item.getWearType())
+            if (selectedWearTypePosition== -1) {
                 selectedWearTypePosition = 0
             }
 
@@ -92,17 +92,24 @@ class EditItemFragment : Fragment() {
             element12 = EditPercentView(item.rangeDamageFactor, getString(R.string.accuracy_damage_factor), context)
             element13 = EditPercentView(item.armor, getString(R.string.armor), context)
             element14 = EditIntView(item.maxHealth, getString(R.string.max_helth), context)
-            element15 = object : MultiselectorFromList<BodyParts>(BodyParts.values().toList(), item.bodyPartCoverage, getString(R.string.body_parts_coverage), activity!!.supportFragmentManager, context) {
+            val bodyPartCoverage = item.getBodyPartCoverage()
+            element15 = object : MultiselectorFromList<BodyParts>(BodyParts.values().toList(), bodyPartCoverage, getString(R.string.body_parts_coverage), activity!!.supportFragmentManager, context) {
+
                 override fun createCheckedMap(): BooleanArray {
                     val booleanArray = BooleanArray(BodyParts.values().size)
                     BodyParts.values().forEachIndexed { i, it ->
-                        booleanArray[i] = item.bodyPartCoverage.contains(it)
+                        booleanArray[i] = bodyPartCoverage.contains(it)
                     }
                     return booleanArray
                 }
 
                 override fun createItemsMap(): ArrayList<String> {
                     return ArrayList(BodyParts.values().map { it.name })
+                }
+            }
+            element15.changeListener = object : AbstractChild.ChangeListener {
+                override fun onChange() {
+                    item.setBodyPartCoverage(bodyPartCoverage)
                 }
             }
 
@@ -142,8 +149,8 @@ class EditItemFragment : Fragment() {
         item?.accuracyRangeFactor = element11.percent!!
         item?.rangeDamageFactor = element12.percent!!
         item?.armor = element13.percent!!
-        item?.itemGroup = ItemGroup.values()[element9.selectedPosition!!]
-        item?.wearType = WearType.values()[element10.selectedPosition!!]
+        item?.setItemGroup(ItemGroup.values()[element9.selectedPosition!!])
+        item?.setWearType(WearType.values()[element10.selectedPosition!!])
         DatabaseManager.save(item!!)
     }
 

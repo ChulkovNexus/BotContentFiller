@@ -5,5 +5,6 @@ enum class WearType {
     Chest,
     Shirt,
     Helmet,
-    Body
+    Body,
+    Default
 }

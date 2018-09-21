@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.events
+package com.bottools.botcontentfiller.ui.buildings
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
@@ -9,7 +9,6 @@ import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Building
 import com.bottools.botcontentfiller.model.Event
-import com.bottools.botcontentfiller.ui.Buildings.BuildingsAdapter
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
 import com.bottools.botcontentfiller.utils.random
 

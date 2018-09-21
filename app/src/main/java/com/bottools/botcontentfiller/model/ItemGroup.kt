@@ -6,5 +6,6 @@ enum class ItemGroup {
     Food,
     MeleeWeapon,
     RangeWeapon,
-    Resource
+    Resource,
+    Default
 }

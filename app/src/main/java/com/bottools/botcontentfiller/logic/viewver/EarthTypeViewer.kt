@@ -13,7 +13,7 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
     var biomes = ArrayList<Biome>()
 
     init {
-        biomes = DatabaseManager.getBiomes()
+        biomes = DatabaseManager.getList()
     }
 
     fun getUnpassableDefaults(tile: MapTile) : String {

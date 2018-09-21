@@ -15,8 +15,10 @@ import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.ExportObject
 import com.bottools.botcontentfiller.ui.biomes.ActivityEditBiomes
+import com.bottools.botcontentfiller.ui.buildings.ActivityEditBuildings
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
 import com.bottools.botcontentfiller.ui.events.ActivityEditEvents
+import com.bottools.botcontentfiller.ui.items.ActivityEditItems
 import com.bottools.botcontentfiller.ui.worktype.ActivityEditWorkTypes
 import com.google.gson.Gson
 import io.realm.ObjectServerError
@@ -53,6 +55,12 @@ class MainActivity : AppCompatActivity() {
         }
         editWorkTipes.setOnClickListener {
             startActivity(Intent(this, ActivityEditWorkTypes::class.java))
+        }
+        editBuildings.setOnClickListener {
+            startActivity(Intent(this, ActivityEditBuildings::class.java))
+        }
+        editItems.setOnClickListener {
+            startActivity(Intent(this, ActivityEditItems::class.java))
         }
         connectToRealmCloud()
     }

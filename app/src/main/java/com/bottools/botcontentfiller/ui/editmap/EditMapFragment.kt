@@ -27,7 +27,7 @@ class EditMapFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        biomesList = DatabaseManager.getBiomes()
+        biomesList = DatabaseManager.getList()
     }
 
     override fun onAttach(context: Context?) {

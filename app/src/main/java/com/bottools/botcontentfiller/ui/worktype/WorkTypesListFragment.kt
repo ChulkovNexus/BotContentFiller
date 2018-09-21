@@ -23,7 +23,7 @@ class WorkTypesListFragment: ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.setTitle(R.string.biomes_list)
+        activity?.setTitle(R.string.edit_work_types)
         workTypes = DatabaseManager.getList()
         adapter = WorkTypesAdapter(activity!!, {
             openEventTilesListFragment(it)

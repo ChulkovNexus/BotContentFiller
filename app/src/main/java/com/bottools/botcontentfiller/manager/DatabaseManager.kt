@@ -2,6 +2,7 @@ package com.bottools.botcontentfiller.manager
 
 import com.bottools.botcontentfiller.model.*
 import io.realm.Realm
+import io.realm.RealmList
 import io.realm.RealmObject
 
 object DatabaseManager {
@@ -128,5 +129,13 @@ object DatabaseManager {
         } else {
             null
         }
+    }
+
+    inline fun <reified T:  RealmObject>getListByIds(requiredBuildingsIds: Array<Int>): ArrayList<T> {
+        val result = ArrayList<T> ()
+        val realm = Realm.getDefaultInstance()
+        val findAll = realm.where(T::class.java).`in`("id", requiredBuildingsIds).findAll()
+        result.addAll(realm.copyFromRealm(findAll))
+        return result
     }
 }

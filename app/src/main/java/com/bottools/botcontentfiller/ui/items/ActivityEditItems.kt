@@ -1,9 +1,8 @@
-package com.bottools.botcontentfiller.ui.events
+package com.bottools.botcontentfiller.ui.items
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.bottools.botcontentfiller.R
-import com.bottools.botcontentfiller.ui.items.ItemsListFragment
 
 
 class ActivityEditItems : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.bottools.botcontentfiller.ui.events
+package com.bottools.botcontentfiller.ui.buildings
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

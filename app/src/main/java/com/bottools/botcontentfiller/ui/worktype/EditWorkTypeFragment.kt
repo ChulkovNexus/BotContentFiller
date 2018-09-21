@@ -56,7 +56,7 @@ class EditWorkTypeFragment : Fragment() {
         }
         workType?.let { workType ->
             val views = ArrayList<AbstractChild>()
-            var selectedPosition = WorkTypeGroup.values().indexOf(workType.workTypeGroup)
+            var selectedPosition = WorkTypeGroup.values().indexOf(workType.getWorkTypeGroup())
             if (selectedPosition==-1) {
                 selectedPosition = 0
             }
@@ -80,7 +80,7 @@ class EditWorkTypeFragment : Fragment() {
         workType?.description = element.str!!
         workType?.baseWorkTime = element1.value!!
         workType?.stealthFactor = element2.percent!!
-        workType?.workTypeGroup = WorkTypeGroup.values()[element3.selectedPosition!!]
+        workType?.setWorkTypeGroup(WorkTypeGroup.values()[element3.selectedPosition!!])
         DatabaseManager.save(workType!!)
     }
 

@@ -16,8 +16,8 @@ class EditEventFragment : Fragment() {
     companion object {
         private const val EVENT_ID = "event_id"
 
-        fun createInstance(eventId: Int): EditBuildingFragment {
-            val fragment = EditBuildingFragment()
+        fun createInstance(eventId: Int): EditEventFragment {
+            val fragment = EditEventFragment()
             val bundle = Bundle()
             bundle.putInt(EVENT_ID, eventId)
             fragment.arguments = bundle

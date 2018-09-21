@@ -66,7 +66,7 @@ class EventsListFragment: ListFragment() {
     }
 
     private fun openEventTilesListFragment(event: Event) {
-        val fragment = EditBuildingFragment.createInstance(event.id)
+        val fragment = EditEventFragment.createInstance(event.id)
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
         transaction.addToBackStack("")

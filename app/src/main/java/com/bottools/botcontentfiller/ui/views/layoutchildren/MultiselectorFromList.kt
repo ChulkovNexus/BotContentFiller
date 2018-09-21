@@ -14,6 +14,26 @@ import io.realm.RealmList
 abstract class MultiselectorFromList<T> : AbstractChild {
 
     @JvmOverloads
+    constructor(possibleArray: List<T>, checkedItems: ArrayList<T>, description: String, fragmentManager: FragmentManager, context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+        val view = Button(context)
+        view.text = description
+        view.setOnClickListener {
+            val dialog = DialogSelection.newInstance(createItemsMap(), createCheckedMap())
+            dialog.callback = { checkedIndexes: BooleanArray ->
+                checkedItems.clear()
+                checkedIndexes.forEachIndexed { i, it ->
+                    if (it) {
+                        checkedItems.add(possibleArray[i])
+                    }
+                }
+                changeListener?.onChange()
+            }
+            dialog.show(fragmentManager, " ")
+        }
+        addView(view, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+    }
+
+    @JvmOverloads
     constructor(possibleArray: List<T>, checkedItems: RealmList<T>, description: String, fragmentManager: FragmentManager, context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         val view = Button(context)
         view.text = description
@@ -53,20 +73,21 @@ abstract class MultiselectorFromList<T> : AbstractChild {
             }
         }
 
-        override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
-            val items = arguments?.getStringArray(ITEMS)
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            val items = arguments?.getStringArrayList(ITEMS)
             var checkedItems = arguments?.getBooleanArray(CHECKED_ITEMS)
-            if (checkedItems==null) {
-                checkedItems = BooleanArray(items!!.size)
-            }
             val builder = AlertDialog.Builder(context!!)
-            builder.setMultiChoiceItems(items, checkedItems, { dialog, which, isChecked ->
-                checkedItems[which] = isChecked
-            })
-
-            builder.setPositiveButton("OK", { dialog, which ->
-                callback.invoke(checkedItems)
-            })
+            if (items!=null) {
+                if (checkedItems==null) {
+                    checkedItems = BooleanArray(items.size)
+                }
+                builder.setMultiChoiceItems(items.toTypedArray(), checkedItems, { dialog, which, isChecked ->
+                    checkedItems[which] = isChecked
+                })
+                builder.setPositiveButton("OK", { dialog, which ->
+                    callback.invoke(checkedItems)
+                })
+            }
 
             builder.setNegativeButton("Cancel", { dialog, which ->
                 dismiss()
