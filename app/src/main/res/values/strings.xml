@@ -96,4 +96,10 @@
     <string name="armor">броня</string>
     <string name="max_helth">максимальное здоровье</string>
     <string name="body_parts_coverage">Покрываемые части тела</string>
+    <string name="speed_factor">мультипликатор скороси</string>
+    <string name="stealth_additional">добавочная скрытность</string>
+    <string name="speed_additional">Добавочная скорость</string>
+    <string name="initial_buildings">Начальные строения</string>
+    <string name="possible_events">возможные евенты</string>
+    <string name="available_worktypes">Доступные типы работы</string>
 </resources>

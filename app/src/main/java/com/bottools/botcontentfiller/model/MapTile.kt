@@ -22,9 +22,9 @@ open class MapTile : RealmObject, Serializable {
     var posX = 0
     var posY = 0
     var biomeId = 0
-    var buildings = RealmList<Building>()
-    var events = RealmList<Long>()
-    var availableWorkTypes = RealmList<WorkType>()
+    var buildingsIds = RealmList<Int>()
+    var eventsIds = RealmList<Int>()
+    var availableWorkTypesIds = RealmList<Int>()
 
     var thisTileCustomDescription : String? = null
     var canSeeThrow: Boolean? = null
@@ -32,6 +32,10 @@ open class MapTile : RealmObject, Serializable {
     var nextTileCustomDescription : String? = null
     var customFarBehindText : String? = null
     var editedAfterBiomeSetted = false
+    var moveSpeedFactor: Float? = 0f
+    var additionalMoveSpeed: Int? = 0
+    var stealthFactor: Float? = 0f
+    var additionalStealth: Int? = 0
 
 
     fun fillFromBiome(selectedBiome: Biome) {
@@ -46,8 +50,14 @@ open class MapTile : RealmObject, Serializable {
             customFarBehindText = randTile.customFarBehindText
             thisTileCustomDescription = randTile.thisTileCustomDescription
             nextTileCustomDescription  = randTile.nextTileCustomDescription
-            availableWorkTypes  = randTile.availableWorkTypes
+            availableWorkTypesIds  = randTile.availableWorkTypesIds
+            moveSpeedFactor  = randTile.moveSpeedFactor
+            additionalMoveSpeed  = randTile.additionalMoveSpeed
+            stealthFactor  = randTile.stealthFactor
+            additionalStealth  = randTile.additionalStealth
             editedAfterBiomeSetted = false
+            buildingsIds = randTile.initialBuildingsIds
+            eventsIds = randTile.possibleEventsIds
         }
     }
 

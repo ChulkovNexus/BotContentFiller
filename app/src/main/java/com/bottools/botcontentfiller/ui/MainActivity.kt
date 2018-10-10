@@ -7,12 +7,16 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
+import com.bottools.botcontentfiller.manager.http.ErrorEntity
+import com.bottools.botcontentfiller.manager.http.HandlerCallback
+import com.bottools.botcontentfiller.manager.http.HttpClient
 import com.bottools.botcontentfiller.model.ExportObject
 import com.bottools.botcontentfiller.ui.biomes.ActivityEditBiomes
 import com.bottools.botcontentfiller.ui.buildings.ActivityEditBuildings
@@ -21,12 +25,9 @@ import com.bottools.botcontentfiller.ui.events.ActivityEditEvents
 import com.bottools.botcontentfiller.ui.items.ActivityEditItems
 import com.bottools.botcontentfiller.ui.worktype.ActivityEditWorkTypes
 import com.google.gson.Gson
-import io.realm.ObjectServerError
-import io.realm.Realm
-import io.realm.SyncCredentials
-import io.realm.SyncUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import okhttp3.ResponseBody
 import java.io.*
 
 
@@ -62,25 +63,6 @@ class MainActivity : AppCompatActivity() {
         editItems.setOnClickListener {
             startActivity(Intent(this, ActivityEditItems::class.java))
         }
-        connectToRealmCloud()
-    }
-
-    private fun connectToRealmCloud() {
-        showProgress(true)
-        val credentials = SyncCredentials.nickname("valera77", true)
-        SyncUser.logInAsync(credentials, AUTH_URL, object : SyncUser.Callback<SyncUser> {
-            override fun onSuccess(user: SyncUser) {
-                showProgress(false)
-                val build = user.createConfiguration("/default").fullSynchronization().build()
-                Realm.setDefaultConfiguration(build)
-            }
-
-            override fun onError(error: ObjectServerError?) {
-                showProgress(false)
-                Toast.makeText(baseContext, "Uh oh something went wrong! (check your logcat please)", Toast.LENGTH_LONG).show()
-                error?.printStackTrace()
-            }
-        })
     }
 
     private fun showProgress(show: Boolean) {
@@ -97,23 +79,77 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_export-> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), EXP_REQ)
-                } else {
-                    export()
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), EXP_REQ)
+//                } else {
+//                    export()
+//                })
+                postData()
                 true
             }
             R.id.action_import-> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), IMP_REQ)
-                } else {
-                    actionImport()
-                }
+                getData()
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), IMP_REQ)
+//                } else {
+//                    actionImport()
+//                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun getData() {
+        showProgress(true)
+        HttpClient.getData(object : HandlerCallback<ExportObject>(){
+            override fun onError(error: ErrorEntity?) {
+                Log.d("12354", error.toString())
+            }
+
+            override fun onComplite(exportObject: ExportObject?) {
+                showProgress(false)
+                if (exportObject != null) {
+                    exportObject.map?.let {
+                        DatabaseManager.saveMap(it)
+                    }
+                    exportObject.biomes?.forEach {
+                        DatabaseManager.save(it)
+                    }
+                    exportObject.events?.forEach {
+                        DatabaseManager.save(it)
+                    }
+                    exportObject.workTypes?.forEach {
+                        DatabaseManager.save(it)
+                    }
+                    exportObject.items?.forEach {
+                        DatabaseManager.save(it)
+                    }
+                }
+            }
+
+        })
+    }
+
+    private fun postData() {
+        showProgress(true)
+        val exportObject = ExportObject()
+        exportObject.map = DatabaseManager.loadMap()
+        exportObject.biomes = DatabaseManager.getList()
+        exportObject.events = DatabaseManager.getList()
+        exportObject.workTypes = DatabaseManager.getList()
+        exportObject.items = DatabaseManager.getList()
+        HttpClient.postData(exportObject, object : HandlerCallback<ResponseBody>(){
+            override fun onError(error: ErrorEntity?) {
+                Log.d("12354", error.toString())
+            }
+
+            override fun onComplite(result: ResponseBody?) {
+                showProgress(false)
+                Log.d("12354", result!!.string())
+            }
+
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

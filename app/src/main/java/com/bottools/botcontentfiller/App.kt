@@ -10,11 +10,11 @@ class App : Application() {
         super.onCreate()
 
         Realm.init(this)
-//        val config = RealmConfiguration.Builder()
-//                .name("osome.realm")
-//                .deleteRealmIfMigrationNeeded()
-//                .build()
-//        Realm.setDefaultConfiguration(config)
+        val config = RealmConfiguration.Builder()
+                .name("osome.realm")
+                .deleteRealmIfMigrationNeeded()
+                .build()
+        Realm.setDefaultConfiguration(config)
 
     }
 }

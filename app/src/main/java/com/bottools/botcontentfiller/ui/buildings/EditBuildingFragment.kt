@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.manager.DatabaseManager
 import com.bottools.botcontentfiller.model.Building
+import com.bottools.botcontentfiller.model.WorkType
 import com.bottools.botcontentfiller.ui.views.layoutchildren.*
 import kotlinx.android.synthetic.main.edit_map_defaults_fragment.*
 
@@ -26,6 +27,7 @@ class EditBuildingFragment : Fragment() {
     }
 
     private var building: Building? = null
+    private var workTypes = ArrayList<WorkType>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -47,6 +49,7 @@ class EditBuildingFragment : Fragment() {
     private lateinit var element3 : EditIntView
     private lateinit var element4 : EditIntView
     private lateinit var element5 : MultiselectorFromList<Building>
+    private lateinit var element6 : MultiselectorFromList<WorkType>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +57,7 @@ class EditBuildingFragment : Fragment() {
         val buildingId = arguments?.getInt(BUILDING_ID)
         if (buildingId != null) {
             building = DatabaseManager.getById(buildingId)
+            workTypes = DatabaseManager.getList()
         }
         building?.let { building ->
             var requiredBuildings = DatabaseManager.getListByIds<Building>(building.requiredBuildingsIds.toTypedArray())
@@ -79,6 +83,32 @@ class EditBuildingFragment : Fragment() {
                     return ArrayList(buildingsList.map { it.name })
                 }
             }
+            element5 = object : MultiselectorFromList<Building>(buildingsList, requiredBuildings, getString(R.string.cant_work_without), activity!!.supportFragmentManager, context) {
+                override fun createCheckedMap(): BooleanArray {
+                    val booleanArray = BooleanArray(buildingsList.size)
+                    buildingsList.forEachIndexed { i, it ->
+                        booleanArray[i] = requiredBuildings.contains(it)
+                    }
+                    return booleanArray
+                }
+
+                override fun createItemsMap(): ArrayList<String> {
+                    return ArrayList(buildingsList.map { it.name })
+                }
+            }
+            element6 = object : MultiselectorFromList<WorkType>(workTypes, building.allowedWorkTypes, getString(R.string.cant_work_without), activity!!.supportFragmentManager, context) {
+                override fun createCheckedMap(): BooleanArray {
+                    val booleanArray = BooleanArray(workTypes.size)
+                    workTypes.forEachIndexed { i, it ->
+                        booleanArray[i] = building.allowedWorkTypes.contains(it)
+                    }
+                    return booleanArray
+                }
+
+                override fun createItemsMap(): ArrayList<String> {
+                    return ArrayList(workTypes.map { it.description })
+                }
+            }
             element5.changeListener = object : AbstractChild.ChangeListener {
                 override fun onChange() {
                     building.requiredBuildingsIds.clear()
@@ -91,6 +121,7 @@ class EditBuildingFragment : Fragment() {
             views.add(element3)
             views.add(element4)
             views.add(element5)
+            views.add(element6)
             views.forEach {
                 it.attachToView(container)
             }

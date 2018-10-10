@@ -12,12 +12,12 @@ open class BiomeTile: RealmObject(), Serializable {
 
     var probability : Float? = 0f
     var moveSpeedFactor: Float? = 0f
-    var additionalMoveSpeed: Float? = 0f
+    var additionalMoveSpeed: Int? = 0
     var stealthFactor: Float? = 0f
-    var additionalStealth: Float? = 0f
-    var possibleEvents = RealmList<Long>()
-    var initialBuildings = RealmList<Building>()
-    var availableWorkTypes = RealmList<WorkType>()
+    var additionalStealth: Int? = 0
+    var availableWorkTypesIds = RealmList<Int>()
+    var possibleEventsIds = RealmList<Int>()
+    var initialBuildingsIds = RealmList<Int>()
     var thisTileCustomDescription : String? = null
     var canSeeThrow: Boolean? = null
     var isUnpassable : Boolean? = false

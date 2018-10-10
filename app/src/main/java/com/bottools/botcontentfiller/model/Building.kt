@@ -15,6 +15,7 @@ open class Building : RealmObject() {
     var energyOutput = 0
     var energyRequered = 0
     var temperatureOtput = 0
+    var allowedWorkTypes = RealmList<WorkType>()
 
 
     override fun equals(other: Any?): Boolean {

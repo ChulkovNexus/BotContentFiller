@@ -18,4 +18,13 @@ open class Event : RealmObject() {
     var probabilityFromAttentionFactor = 0f
     var probabilityFromStealthFactor = 0f
     var isGlobal = false
+
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is Building) {
+            return false
+        } else {
+            return id == other.id
+        }
+    }
 }

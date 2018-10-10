@@ -13,12 +13,9 @@ open class WorkType : RealmObject() {
     var description = ""
     var baseWorkTime = 0
     var workTypeGroup = ""
-    var requiredItems = RealmList<Item>()
-    var requiredBuildings = RealmList<Building>()
-    // output can be buildings, expirience or items
+    // output can be buildingsIds, expirience or items
     // need skill levels limits
     var stealthFactor = 0f
-
 
     fun setWorkTypeGroup(enum: WorkTypeGroup) {
         this.workTypeGroup = enum.toString()
