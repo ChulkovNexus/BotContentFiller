@@ -42,4 +42,12 @@
         android:layout_height="56dp"
         android:text="@string/buildings_list"/>
 
+
+    <Button
+        android:id="@+id/editResources"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="@string/resources_editing"/>
+
+
 </LinearLayout>

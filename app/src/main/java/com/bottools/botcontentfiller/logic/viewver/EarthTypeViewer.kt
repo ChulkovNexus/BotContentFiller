@@ -43,7 +43,7 @@ open class EarthTypeViewer(map: WorldMap) : Viewer(map) {
     override fun getRangeDependedText(nextCell: MapTile, range: Int): String? {
         if (range == 1) {
             return nextCell.nextTileCustomDescription
-        }   else {
+        } else {
             return nextCell.customFarBehindText
         }
     }

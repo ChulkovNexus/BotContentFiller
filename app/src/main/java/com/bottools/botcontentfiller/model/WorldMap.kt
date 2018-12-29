@@ -2,7 +2,6 @@ package com.bottools.botcontentfiller.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.RealmResults
 import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 
@@ -46,7 +45,6 @@ open class WorldMap : RealmObject() {
     fun getTile(currX: Int, currY: Int) : MapTile {
         return tiles[currY][currX]
     }
-
 
     fun getRightCell(currX: Int, currY: Int, count : Int = 1) : MapTile? {
         if (currX + count < tiles[currY].size) {

@@ -102,4 +102,5 @@
     <string name="initial_buildings">Начальные строения</string>
     <string name="possible_events">возможные евенты</string>
     <string name="available_worktypes">Доступные типы работы</string>
+    <string name="resources_editing">Редактирование ресурсов</string>
 </resources>

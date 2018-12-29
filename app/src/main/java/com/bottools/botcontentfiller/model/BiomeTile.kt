@@ -17,6 +17,7 @@ open class BiomeTile: RealmObject(), Serializable {
     var additionalStealth: Int? = 0
     var availableWorkTypesIds = RealmList<Int>()
     var possibleEventsIds = RealmList<Int>()
+    var mapResources = RealmList<Int>()
     var initialBuildingsIds = RealmList<Int>()
     var thisTileCustomDescription : String? = null
     var canSeeThrow: Boolean? = null

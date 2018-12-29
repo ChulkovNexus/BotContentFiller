@@ -1,6 +1,7 @@
 package com.bottools.botcontentfiller
 
 import android.app.Application
+import com.bottools.botcontentfiller.model.migrations.Migration
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -12,9 +13,10 @@ class App : Application() {
         Realm.init(this)
         val config = RealmConfiguration.Builder()
                 .name("osome.realm")
-                .deleteRealmIfMigrationNeeded()
+                .schemaVersion(1)
+                .migration(Migration())
                 .build()
         Realm.setDefaultConfiguration(config)
-
     }
+
 }

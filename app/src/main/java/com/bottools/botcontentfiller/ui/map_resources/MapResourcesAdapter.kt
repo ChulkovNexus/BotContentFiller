@@ -9,8 +9,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.bottools.botcontentfiller.R
 import com.bottools.botcontentfiller.model.Item
+import com.bottools.botcontentfiller.model.MapResource
 
-class ItemsAdapter(context: Context, val editItemsListener : (Item)-> Unit, val removeItemsListener : (Item)-> Unit ) : ArrayAdapter<Item>(context, R.layout.adapter_layout_editing) {
+class MapResourcesAdapter(context: Context, val editItemsListener : (MapResource)-> Unit, val removeItemsListener : (MapResource)-> Unit ) : ArrayAdapter<MapResource>(context, R.layout.adapter_layout_editing) {
 
     val inflater = LayoutInflater.from(context)
 
@@ -34,7 +35,7 @@ class ItemsAdapter(context: Context, val editItemsListener : (Item)-> Unit, val 
         val remove = view.findViewById<ImageButton>(R.id.remove_button)
         val descr = view.findViewById<TextView>(R.id.description)
 
-        fun bind(item: Item) {
+        fun bind(item: MapResource) {
             descr.text = item.name
             editButton.setOnClickListener {
                 editItemsListener.invoke(item)

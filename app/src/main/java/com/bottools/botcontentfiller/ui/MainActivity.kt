@@ -23,6 +23,7 @@ import com.bottools.botcontentfiller.ui.buildings.ActivityEditBuildings
 import com.bottools.botcontentfiller.ui.editmap.ActivityEditMap
 import com.bottools.botcontentfiller.ui.events.ActivityEditEvents
 import com.bottools.botcontentfiller.ui.items.ActivityEditItems
+import com.bottools.botcontentfiller.ui.map_resources.ActivityEditMapResources
 import com.bottools.botcontentfiller.ui.worktype.ActivityEditWorkTypes
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,8 +37,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val EXP_REQ = 0x001
         private const val IMP_REQ = 0x002
-        private val INSTANCE_ADDRESS = "handmadebotfillercloud.de1a.cloud.realm.io"
-        val AUTH_URL = "https://$INSTANCE_ADDRESS/auth"
 
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +61,9 @@ class MainActivity : AppCompatActivity() {
         }
         editItems.setOnClickListener {
             startActivity(Intent(this, ActivityEditItems::class.java))
+        }
+        editItems.setOnClickListener {
+            startActivity(Intent(this, ActivityEditMapResources::class.java))
         }
     }
 
@@ -109,23 +111,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onComplite(exportObject: ExportObject?) {
                 showProgress(false)
-                if (exportObject != null) {
-                    exportObject.map?.let {
-                        DatabaseManager.saveMap(it)
-                    }
-                    exportObject.biomes?.forEach {
-                        DatabaseManager.save(it)
-                    }
-                    exportObject.events?.forEach {
-                        DatabaseManager.save(it)
-                    }
-                    exportObject.workTypes?.forEach {
-                        DatabaseManager.save(it)
-                    }
-                    exportObject.items?.forEach {
-                        DatabaseManager.save(it)
-                    }
-                }
+                saveExportOpject(exportObject)
             }
 
         })
@@ -139,6 +125,8 @@ class MainActivity : AppCompatActivity() {
         exportObject.events = DatabaseManager.getList()
         exportObject.workTypes = DatabaseManager.getList()
         exportObject.items = DatabaseManager.getList()
+        exportObject.buildings = DatabaseManager.getList()
+        exportObject.mapResources = DatabaseManager.getList()
         HttpClient.postData(exportObject, object : HandlerCallback<ResponseBody>(){
             override fun onError(error: ErrorEntity?) {
                 Log.d("12354", error.toString())
@@ -189,6 +177,10 @@ class MainActivity : AppCompatActivity() {
             val gson = Gson()
             exportObject = gson.fromJson(outStringBuf.toString(), ExportObject::class.java)
         }
+        saveExportOpject(exportObject)
+    }
+
+    fun saveExportOpject(exportObject: ExportObject?) {
         if (exportObject != null) {
             exportObject.map?.let {
                 DatabaseManager.saveMap(it)
@@ -203,6 +195,12 @@ class MainActivity : AppCompatActivity() {
                 DatabaseManager.save(it)
             }
             exportObject.items?.forEach {
+                DatabaseManager.save(it)
+            }
+            exportObject.buildings?.forEach {
+                DatabaseManager.save(it)
+            }
+            exportObject.mapResources?.forEach {
                 DatabaseManager.save(it)
             }
         }

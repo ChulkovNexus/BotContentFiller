@@ -24,6 +24,7 @@ open class MapTile : RealmObject, Serializable {
     var biomeId = 0
     var buildingsIds = RealmList<Int>()
     var eventsIds = RealmList<Int>()
+    var mapResources = RealmList<Int>()
     var availableWorkTypesIds = RealmList<Int>()
 
     var thisTileCustomDescription : String? = null
@@ -58,6 +59,7 @@ open class MapTile : RealmObject, Serializable {
             editedAfterBiomeSetted = false
             buildingsIds = randTile.initialBuildingsIds
             eventsIds = randTile.possibleEventsIds
+            mapResources = randTile.mapResources
         }
     }
 

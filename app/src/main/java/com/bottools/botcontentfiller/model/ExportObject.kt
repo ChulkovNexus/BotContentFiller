@@ -6,4 +6,6 @@ class ExportObject {
     var events: ArrayList<Event>? = null
     var workTypes: ArrayList<WorkType>? = null
     var items: ArrayList<Item>? = null
+    var buildings: ArrayList<Building>? = null
+    var mapResources: ArrayList<MapResource>? = null
 }
